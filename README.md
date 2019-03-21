@@ -1,0 +1,2 @@
+# gentfight
+Lorteeksamensprojekt til DigiTek
