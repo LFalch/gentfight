@@ -1,8 +1,8 @@
 # gentfight
+
 Eksamensprojekt til DigiTek
 
 Brawler styret med mobiltelefoner.
-
 
 ## Hvordan virker det?
 
