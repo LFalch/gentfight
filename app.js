@@ -42,6 +42,7 @@ io.sockets.on('connection',
     } else {
       side = sides.pop();
       console.log("We have a new client ("+side+"): " + socket.id);
+      serverSocket.emit('join', {side: side});
       socket.emit('assign', {side: side});
     }
     socket.on('move',

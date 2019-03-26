@@ -1,22 +1,16 @@
 function Player(side, name){
-    let x, y = 100;
+    this.y = 100;
 
     if (side == 'left') {
-        x = 200;
+        this.x = 200;
     } else {
-        x = 1400;
+        this.x = 1400;
     }
 
-    return {
-        w: 32,
-        h: 64,
-        lives: 10,
-        name: name,
-        x: x,
-        y: y,
-        img: loadImage('assets/character' + side + '.png'),
-        show: () => {
-            image(this.img, x, y);
-        }
-    };
+    this.lives = 10;
+    this.name = name;
+    this.img = loadImage('assets/character_template/stuff.png'),
+    this.show =  () => {
+        image(this.img, this.x, this.y);
+    ;}
 }
