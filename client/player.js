@@ -9,7 +9,7 @@ function Player(side, name){
 
     this.lives = 10;
     this.name = name;
-    this.img = loadImage('assets/character_template/stuff.png'),
+    this.img = loadImage('assets/character_template/idle_temp.png'),
     this.show =  () => {
         image(this.img, this.x, this.y);
     ;}
