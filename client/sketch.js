@@ -20,7 +20,8 @@ function setup() {
 function draw() {
     background('grey');
     pLeft.show();
-    pRight.show();
+	pRight.show();
+	
 }
 
 

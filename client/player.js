@@ -14,9 +14,12 @@ function Player(side, name){
         name: name,
         x: x,
         y: y,
-        img: loadImage('assets/character' + side + '.png'),
+//        img: loadImage('assets/character' + side + '.png'),
+        img: loadImage('assets/character_template/idle_temp.png'),
         show: () => {
             image(this.img, x, y);
+//            image(this.img[(round(millis() / 500) % 32)], x, y);
         }
     };
+
 }
