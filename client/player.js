@@ -6,26 +6,19 @@ function imageFlip(img, x, y, w, h, sx, sy, sw, sh) {
 }
 
 function Player(side, name){
-
-    if (side == 'left'){
-        this.x = 200;
-    } else {
-        this.x = 1200;
-    }
-
-    this.y = 100;
-    this.sy = 0;
-    this.w = 96;
-    this.h = 192;
-    this.sw = 96;
-    this.sh = 192;
+    this.i = 0;
+    y = 100;
+    w = 96;
+    h = 192;
     if (side == 'left') {
         this.show = () => {
-            image(this.img, this.x, this.y, this.w, this.h, 96*Math.floor(this.i++ / 20), this.sy, this.sw, this.sh);
+            image(this.img, 200, 100, w, h, 96*Math.floor(this.i++ / 20), 0, w, h);
+            this.i %= 20*4;
         };
     } else {
         this.show = () => {
-            imageFlip(this.img, this.x, this.y, this.w, this.h, 96*Math.floor(this.i++ / 20), this.sy, this.sw, this.sh);
+            imageFlip(this.img, 600, 100, w, h, 96 * Math.floor(this.i++ / 20), 0, w, h);
+            this.i %= 20*4;
         };
     }
     this.lives = 10;
