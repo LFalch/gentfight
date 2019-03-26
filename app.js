@@ -39,7 +39,7 @@ io.sockets.on('connection',
     socket.on('leftPlayer',
       function(data) {
         // Data comes in as whatever was sent, including objects
-        console.log("Received: 'leftPlayer' " + data.x + " " + data.y);
+        console.log("Received: 'leftPlayer' " + data.action);
       
         // Send it to all other clients
         socket.broadcast.emit('leftPlayer', data);
@@ -49,7 +49,19 @@ io.sockets.on('connection',
 
       }
     );
+    socket.on('rightPlayer',
+    function(data) {
+      // Data comes in as whatever was sent, including objects
+      console.log("Received: 'rightPlayer' " + data.action);
     
+      // Send it to all other clients
+      socket.broadcast.emit('rightPlayer', data);
+      
+      // This is a way to send to everyone including sender
+      // io.sockets.emit('message', "this goes to everyone");
+
+    }
+  );
     socket.on('disconnect', function() {
       console.log("Client has disconnected");
     });
