@@ -1,2 +1,4 @@
 # gentfight
-Lorteeksamensprojekt til DigiTek
+Eksamensprojekt til DigiTek
+
+Brawler styret med mobiltelefoner.
