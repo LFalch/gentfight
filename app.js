@@ -1,13 +1,14 @@
 const express = require('express');
 const app = express();
 
-const server = app.listen(process.env.PORT || 3000, listen);
+const ip = require("ip").address();
+
+const server = app.listen(3000, '0.0.0.0', listen);
 
 // This callback just tells us that the server has started
 function listen() {
-  const host = server.address().address;
   const port = server.address().port;
-  console.log('Example app listening at https://' + host + ':' + port);
+  console.log('App listening at http://' + ip + ':' + port);
 }
 
 app.use(express.static('client'));
@@ -27,6 +28,7 @@ io.sockets.on('connection',
 
     if (!serverSocket) {
       console.log('Client connected');
+      socket.emit('welcome', {addr: ip + ':' + server.address().port});
       serverSocket = socket;
       socket.on('disconnect', function() {
         serverSocket = null;
