@@ -6,17 +6,13 @@ function imageFlip(img, x, y, w, h, sx, sy, sw, sh) {
 }
 
 function Player(side, name){
-    this.y = 100;
-
     if (side == 'left') {
-        this.x = 200;
         this.show = () => {
-            image(this.img, this.x, this.y);
+            image(this.img, 200, 100);
         };
     } else {
-        this.x = 600;
         this.show = () => {
-            imageFlip(this.img, this.x, this.y);
+            imageFlip(this.img, 600, 100);
         };
     }
 
