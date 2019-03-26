@@ -1,4 +1,4 @@
-function Player(side, name, character){
+function Player(side, name){
     let x, y = 100;
 
     if (side == 'left') {
@@ -8,6 +8,10 @@ function Player(side, name, character){
     }
 
     return {
+        w: 32,
+        h: 64,
+        lives: 10,
+        name: name,
         x: x,
         y: y,
         img: loadImage('assets/character' + side + '.png'),
