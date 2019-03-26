@@ -21,8 +21,8 @@ function setup() {
 }
 
 function draw() {
-	fill("red");
-	ellipse(20,20,40,40);
+    fill("red");
+    ellipse(20,20,40,40);
 }
 
 
