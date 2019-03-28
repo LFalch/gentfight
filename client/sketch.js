@@ -29,10 +29,24 @@ function setup() {
 function draw() {
     background('grey');
     textSize(16);
-    text("i: " + pLeft.i,600,50);
+    text("i: " + pLeft.i,600,100);
     text("life: " + pLeft.lives, pLeft.x, pLeft.y+20);
     text("life: " + pRight.lives, pRight.x, pRight.y+20);
+    stroke('black')
+    rect(width-20-10*30-1, 19, 10*30+1, 41);
+    rect(19, 19, 10*30+1, 41);
+    noStroke();
+    let hBarRight = map(pRight.lives,10,0,255,10);
+    fill(255-hBarRight,hBarRight,0);
+    rect(width-20-pRight.lives*30, 20, pRight.lives*30, 40);
+
+    let hBarLeft = map(pLeft.lives,10,0,255,10);
+    fill(255-hBarLeft, hBarLeft, 0);
+    rect(20, 20, pLeft.lives*30, 40);
+
+    noFill();
     image(raft, width/2-raft.width/2, 228, raft.width, raft.height/2);
+
     pLeft.show();
     pLeft.changeState();
     pRight.show();
@@ -93,12 +107,6 @@ function fight(side) {
         player.resetState();
         otherPlayer.lives -= 1;
     }
-
-    // if (player.state != 'idle'){
-    //     if (player.i >= player.speed*player.img_total-1) {
-    //         player.resetState();
-    //     }
-    // }
 }
 
 function keyPressed () {
