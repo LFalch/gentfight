@@ -12,12 +12,12 @@ function Player(side, name){
     h = 192;
     if (side == 'left') {
         this.show = () => {
-            image(this.img, 200, 100, w, h, 96*Math.floor(this.i++ / 20), 0, w, h);
+            image(this.img, 250, 100, w, h, 96*Math.floor(this.i++ / 20), 0, w, h);
             this.i %= 20*4;
         };
     } else {
         this.show = () => {
-            imageFlip(this.img, 600, 100, w, h, 96 * Math.floor(this.i++ / 20), 0, w, h);
+            imageFlip(this.img, 450, 100, w, h, 96 * Math.floor(this.i++ / 20), 0, w, h);
             this.i %= 20*4;
         };
     }

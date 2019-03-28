@@ -11,6 +11,10 @@ let joined = {
     left: false,
     right: false,
 }
+function preload() {
+    raft = loadImage('assets/scenery/raft.png');
+    ocean_tiles = loadImage('assets/scenery/ocean_tiles.png');
+}
 
 function setup() {
     pLeft = new Player('left');
@@ -27,7 +31,7 @@ function setup() {
 
 function draw() {
     background('grey');
-
+    image(raft, width/2-raft.width/2, 228, raft.width, raft.height/2);
     pLeft.show();
     pRight.show();
 
