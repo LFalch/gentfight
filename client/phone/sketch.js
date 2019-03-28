@@ -2,7 +2,7 @@ let side;
 let socket;
 
 function socketInit() {
-    socket = io.connect('http://localhost:3000');
+    socket = io.connect(window.location.origin);
     socket.on('assign', function(data) {
         console.log('Got a side', data);
         side = data.side;
