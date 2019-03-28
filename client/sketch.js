@@ -1,8 +1,3 @@
-/*
-Skriv denne kommando i terminalen:
-node app.js
-*/
-    
 let socket;
 let addr;
 
@@ -11,6 +6,9 @@ let joined = {
     left: false,
     right: false,
 }
+
+let raft, ocean_tiles;
+
 function preload() {
     raft = loadImage('assets/scenery/raft.png');
     ocean_tiles = loadImage('assets/scenery/ocean_tiles.png');
