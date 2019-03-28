@@ -4,6 +4,7 @@ node app.js
 */
     
 let socket;
+let addr;
 
 let pLeft, pRight;
 let joined = {
@@ -14,8 +15,11 @@ let joined = {
 function setup() {
     pLeft = new Player('left');
     pRight = new Player('right');
-    socket = io.connect('http://localhost:3000');
+    socket = io.connect(window.location.origin);
     createCanvas(800, 450);
+    socket.on('welcome', (data) => {
+        addr = data.addr;
+    });
     socket.on('join', joinPlayer);
     socket.on('leftPlayer', actionPlayerLeft);
     socket.on('rightPlayer', actionPlayerRight);
@@ -29,7 +33,7 @@ function draw() {
 
     if (!(joined.left || joined.right)) {
         textSize(30);
-        text("Waiting for all players", 250, 100);
+        text('Waiting for all players' + (addr ? (' on ' + addr):''), 250, 100);
     }
 }
 

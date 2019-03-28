@@ -1,13 +1,14 @@
 const express = require('express');
 const app = express();
 
+const ip = require('ip').address();
+
 const server = app.listen(process.env.PORT || 3000, listen);
 
 // This callback just tells us that the server has started
 function listen() {
-  const host = server.address().address;
   const port = server.address().port;
-  console.log('Example app listening at https://' + host + ':' + port);
+  console.log('Example app listening at http://' + ip + ':' + port);
 }
 
 app.use(express.static('client'));
@@ -28,6 +29,7 @@ io.sockets.on('connection',
     if (!serverSocket) {
       console.log('Client connected');
       serverSocket = socket;
+      serverSocket.emit('welcome', {addr: ip})
       socket.on('disconnect', function() {
         serverSocket = null;
         console.log("Client has disconnected");
