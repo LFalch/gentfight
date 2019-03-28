@@ -1,9 +1,12 @@
 const express = require('express');
+const osc = require('node-osc');
 const app = express();
 
-const ip = require("ip").address();
-
 const server = app.listen(3000, '0.0.0.0', listen);
+const ip = require('ip').address();
+
+const osc_client = new osc.Client('127.0.0.1', 6448);
+const osc_server = new osc.Server(12000, '127.0.0.1');
 
 // This callback just tells us that the server has started
 function listen() {
@@ -26,18 +29,20 @@ io.sockets.on('connection',
   function (socket) {
     let side;
 
+    // If we don't have a server, assume first connector is the server
     if (!serverSocket) {
       console.log('Client connected');
       socket.emit('welcome', {addr: ip + ':' + server.address().port});
       serverSocket = socket;
+      serverSocket.emit('welcome', {addr: ip})
       socket.on('disconnect', function() {
         serverSocket = null;
         console.log("Client has disconnected");
       });
       return
     }
-    playerSockets[side] = socket;
-
+    // Otherwise, check if there are sides left and save the socket
+    
     if (sides.length == 0) {
       socket.disconnect();
       return
@@ -47,14 +52,20 @@ io.sockets.on('connection',
       serverSocket.emit('join', {side: side});
       socket.emit('assign', {side: side});
     }
-    socket.on('move',
+    
+    playerSockets[side] = socket;
+
+    socket.on('motion',
       function(data) {
-        console.log('Received from ' + side + ": " + data.action);
+        if (data.downMotion) {
+          const msg = new osc.Message('/wek/inputs', data.downMotion, data.sidewaysMotion);
+          osc_client.send(msg);
+        }
       }
     );
     socket.on('disconnect', function() {
-      sides.push(side);
       delete playerSockets[side];
+      sides.push(side);
       console.log("Phone has disconnected");
     });
   }

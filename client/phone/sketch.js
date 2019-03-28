@@ -16,42 +16,39 @@ let orientation = {
     gamma: 0,
     absolute: false,
 };
-
-let acceleration = { x: 0, y: 0, z: 0 };
-let accelerationIncludingGravity = { x: 0, y: 0, z: 0 };
-let rotationRate = { alpha: 0, beta: 0, gamma: 0 };
+let rotationRate = {
+    alpha: 0,
+    beta: 0,
+    gamma: 0,
+};
+let acceleration = new Vector(0, 0, 0);
+let accelerationWithGrav = new Vector(0, 0, 0);
 let interval = 0;
 
+function checkFeature(feature, cb) {
+    if (!('on' + feature in window)) {
+        unsupporteds.push(feature);
+    } else {
+        window.addEventListener(feature, cb);
+    }
+}
+
 function preload() {
-    if (!('ondeviceorientation' in window)) {
-        unsupporteds.push('deviceorientation');
-    } else {
-        window.addEventListener('deviceorientation', function (event) {
-            orientation.alpha = event.alpha;
-            orientation.beta = event.beta;
-            orientation.gamma = event.gamma;
-            orientation.absolute = event.absolute;
-        });
-    }
-
-    if (!('ondevicemotion' in window)) {
-        unsupporteds.push('devicemotion');
-    } else {
-        window.addEventListener('devicemotion', function (event) {
-            acceleration = event.acceleration;
-            accelerationIncludingGravity = event.accelerationIncludingGravity;
-            rotationRate = event.rotationRate;
-            interval = event.interval;
-        });
-    }
-
-    if (!('oncompassneedscalibration' in window)) {
-        unsupporteds.push('compassneedscalibration');
-    } else {
-        window.addEventListener('compassneedscalibration', function (event) {
-            alert('Compass needs calibrating! Wave your device in a figure-eight motion!');
-        });
-    }
+    checkFeature('deviceorientation', (event) => {
+        orientation.alpha = event.alpha;
+        orientation.beta = event.beta;
+        orientation.gamma = event.gamma;
+        orientation.absolute = event.absolute;
+    });
+    checkFeature('devicemotion', (event) => {
+        rotationRate = event.rotationRate;
+        acceleration = new Vector(event.acceleration);
+        accelerationWithGrav = new Vector(event.accelerationIncludingGravity);
+        interval = event.interval;
+    });
+    checkFeature('compassneedscalibration', () => {
+        alert('Please calibrate your compass: Wave your phone around like an idiot.');
+    })
 }
 
 function setup() {
@@ -72,6 +69,21 @@ function draw() {
         text('Click to join', 10, 34); 
     } else {
         text(side, 10, 30);
+
+        const downDir = accelerationWithGrav.sub(acceleration).normalise();
+        const downMotion = acceleration.dot(downDir ? downDir : new Vector(0, 0, 0));
+        const sidewaysMotion = Math.sqrt(acceleration.lengthSq() - downMotion*downMotion);
+
+        if (downMotion && sidewaysMotion) {
+            text('down: ' + Math.round(downMotion*10)/10, 10, 55);
+            text('side: ' + Math.round(sidewaysMotion*10)/10, 10, 80);
+
+            const packet = {
+                downMotion,
+                sidewaysMotion
+            };
+            socket.emit('motion', packet);
+        }
     }
     
     textSize(16);
@@ -83,6 +95,6 @@ function draw() {
     text('Interval: ' + interval + ' ms', 5, 130);
 }
 
-function mouseClicked() {
+function mouseReleased() {
     socketInit()
 }
