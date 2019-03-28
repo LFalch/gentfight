@@ -21,8 +21,7 @@ function setup() {
     socket = io.connect('http://localhost:3000');
     createCanvas(800, 450);
     socket.on('join', joinPlayer);
-    socket.on('leftPlayer', actionPlayerLeft);
-    socket.on('rightPlayer', actionPlayerRight);
+    socket.on('action', playerAction);
 }
 
 function draw() {
@@ -42,10 +41,13 @@ function joinPlayer(data) {
     console.log(data.side + ' joined');
 }
 
-function actionPlayerLeft(data){
+function playerAction(data){
     console.log(data);
-}
+    if (data.punch) {
+        
+        
+    } else if (data.block) {
+        
 
-function actionPlayerRight(data){
-    console.log(data);
+    }
 }
