@@ -7,7 +7,7 @@ Brawler styret med mobiltelefoner.
 ## Hvordan virker det?
 
 For at kunne køre projektet, skal du installere node-modulerne som det kræver.
-Dette kan gøres ved at køre `npm install --save` i repoet.
+Dette kan gøres ved at køre `npm install --save` i repoet, eller køre `setup.bat`.
 
 Når modulerne er installeret, kan man starte node-serveren med `node app.js`.
 Herfra kan du gå ind på spillet på `http://localhost:3000`.
