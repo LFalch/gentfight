@@ -24,15 +24,22 @@ function setup() {
     });
     socket.on('join', joinPlayer);
     socket.on('action', playerAction);
+    j = 0;
 }
 
 function draw() {
     background('grey');
+    // for (let i = 0; i <= 7; i++){
+    //     for (let k = 1; k <= 4; k++){
+    //         image(ocean_tiles, i*256/2, k*264/2, 256/2, 264/2, (256/2) * Math.floor(j++ / 200), 0, 256/2, 256/2);
+    //         j %= 200*6;
+    //     }
+    // }
     textSize(16);
     text("i: " + pLeft.i,600,100);
     text("life: " + pLeft.lives, pLeft.x, pLeft.y+20);
     text("life: " + pRight.lives, pRight.x, pRight.y+20);
-    stroke('black')
+    stroke('black');
     rect(width-20-10*30-1, 19, 10*30+1, 41);
     rect(19, 19, 10*30+1, 41);
     noStroke();
