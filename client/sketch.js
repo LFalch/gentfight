@@ -14,6 +14,7 @@ function preload() {
     ocean_tiles = loadImage('assets/scenery/ocean_tiles.png');
 }
 
+
 function setup() {
     pLeft = new Player('left');
     pRight = new Player('right');
@@ -24,17 +25,11 @@ function setup() {
     })
     socket.on('join', joinPlayer);
     socket.on('action', playerAction);
-    j = 0;
 }
 
 function draw() {
-    background('grey');
-    // for (let i = 0; i <= 7; i++){
-    //     for (let k = 1; k <= 4; k++){
-    //         image(ocean_tiles, i*256/2, k*264/2, 256/2, 264/2, (256/2) * Math.floor(j++ / 200), 0, 256/2, 256/2);
-    //         j %= 200*6;
-    //     }
-    // }
+    background(0, 119, 190);
+
     textSize(16);
     text("i: " + pLeft.i,600,100);
     text("life: " + pLeft.lives, pLeft.x, pLeft.y+20);
@@ -59,9 +54,10 @@ function draw() {
     pRight.show();
     pRight.changeState();
 
-    if (!(joined.left || joined.right)) {
+    
+    if (!(joined.left && joined.right)) {
         textSize(30);
-        text("Waiting for all players on " + server_address, 150, 100);
+        text('Waiting for all players on ' + server_address, 150, 100);
     }
 }
 

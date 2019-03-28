@@ -1,5 +1,5 @@
 let side;
-let socket;
+let socket = null;
 
 function socketInit() {
     socket = io.connect(window.location.origin);
@@ -7,6 +7,7 @@ function socketInit() {
         console.log('Got a side', data);
         side = data.side;
     });
+    delete socketInit;
 }
 
 let unsupporteds = [];
@@ -85,14 +86,6 @@ function draw() {
             socket.emit('motion', packet);
         }
     }
-    
-    textSize(16);
-    text('Coordinates: (' + orientation.alpha + ', ' + orientation.beta + ', ' + orientation.gamma + ')', 5, 50);
-    text('Absolute? ' + orientation.absolute, 5, 66);
-    text('Acceleration: (' + acceleration.x + ', ' + acceleration.y + ', ' + acceleration.z + ') m/s²', 5, 82);
-    text('Acceleration w/ grav: (' + accelerationIncludingGravity.x + ', ' + accelerationIncludingGravity.y + ', ' + accelerationIncludingGravity.z + ') m/s²', 5, 98);
-    text('Rotation rate: (' + rotationRate.alpha + ', ' + rotationRate.beta + ', ' + rotationRate.gamma + ')', 5, 114);
-    text('Interval: ' + interval + ' ms', 5, 130);
 }
 
 function mouseReleased() {
