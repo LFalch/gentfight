@@ -112,10 +112,13 @@ function draw() {
                 downData.shift();
             }
             for (let i = 0; i < 15; i++){
+                
+                let graph0_y = map(0, -5, 5, canvasHeight/6, canvasHeight/3);
+                line(0,graph0_y,canvasWidth,graph0_y);
                 let sidesX_1 = map(i, 0, 14, 0, canvasWidth/2);
                 let sidesX_2 = map(i+1, 0, 14, 0, canvasWidth/2);
-                let sidesY_1 = map(sidesData[i], -5, 5,canvasHeight/6, canvasHeight/3);
-                let sidesY_2 = map(sidesData[i+1], -5, 5,canvasHeight/6, canvasHeight/3);
+                let sidesY_1 = map(sidesData[i], -5, 5, canvasHeight/6, canvasHeight/3);
+                let sidesY_2 = map(sidesData[i+1], -5, 5, canvasHeight/6, canvasHeight/3);
                 line(sidesX_1,sidesY_1,sidesX_2,sidesY_2);
 
                 let downX_1 = map(i, 0, 14, canvasWidth/2, canvasWidth);
