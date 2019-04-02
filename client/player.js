@@ -24,14 +24,14 @@ function Player(side, name){
     }
     if (side == 'left') {
         this.show = () => {
-            this.x = 250;
+            this.x = 304;
             tint('red');
             image(this.img, this.x, this.y, w, h, w * Math.floor(this.i++ / this.speed), 0, w, h);
             this.i %= this.speed*this.img_total;
         };
     } else {
         this.show = () => {
-            this.x = 450;
+            this.x = 400;
             tint('blue');
             imageFlip(this.img, this.x, this.y, w, h, w * Math.floor(this.i++ / this.speed), 0, w, h);
             this.i %= this.speed*this.img_total;
