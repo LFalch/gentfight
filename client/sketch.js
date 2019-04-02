@@ -19,7 +19,7 @@ function setup() {
     socket = io.connect(window.location.origin);
     createCanvas(800, 450);
     socket.on('welcome', function({addr, joinedSides}) {
-        if (joineds) {
+        if (joinedSides) {
             for (side of joinedSides) {
                 joined[side] = true;
             }
