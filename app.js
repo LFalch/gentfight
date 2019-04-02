@@ -63,10 +63,17 @@ io.sockets.on('connection',
         }
       }
     );
-    socket.on('disconnect', function() {
-      delete playerSockets[side];
-      sides.push(side);
-      console.log("Phone has disconnected");
-    });
+    socket.on('disconnect', 
+      function() {
+        delete playerSockets[side];
+        sides.push(side);
+        console.log("Phone has disconnected");
+      }
+    );
+    socket.on('action', 
+      function (data) {
+        serverSocket.emit('action', data);
+      }
+    );
   }
 );

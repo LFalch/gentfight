@@ -32,7 +32,7 @@ function setup() {
 
 function draw() {
     background(0, 119, 190);
-
+    fill("black");
     textSize(16);
     text("life: " + pLeft.lives, pLeft.x, pLeft.y-20);
     text("life: " + pRight.lives, pRight.x, pRight.y-20);
