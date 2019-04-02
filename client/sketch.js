@@ -56,7 +56,8 @@ function draw() {
     
     if (!(joined.left && joined.right)) {
         textSize(30);
-        text('Waiting for all players on ' + server_address, 150, 100);
+        fill('black');
+        text('Waiting for all players on ' + server_address, 150, 125);
     }
 }
 
