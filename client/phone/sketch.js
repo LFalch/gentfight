@@ -3,6 +3,10 @@ let socket = null;
 let buttonStartY = window.innerHeight/2;
 let canvasWidth = window.innerWidth-window.innerWidth*1/20;
 let canvasHeight = window.innerHeight-window.innerHeight*1/20;
+
+let sidesData = [];
+let downData = [];
+
 function socketInit() {
     delete socketInit;
     socket = io.connect(window.location.origin);
@@ -75,7 +79,9 @@ function draw() {
     text('Punch',punchButtonX+200,buttonStartY+canvasHeight/4);
     text('Block',blockButtonX+200,buttonStartY+canvasHeight/4);
     fill('white');
-    rect(canvasWidth/8,canvasHeight/6,canvasWidth-canvasWidth/4,canvasHeight/3);
+    
+    rect(0,canvasHeight/6,canvasWidth/2,canvasHeight/3);                //box for sideData
+    rect(0+canvasWidth/2,canvasHeight/6,canvasWidth/2,canvasHeight/3);    //box for downData
 
     if (unsupporteds.length > 0) {
         textSize(12);
@@ -95,6 +101,31 @@ function draw() {
         if (downMotion && sidewaysMotion) {
             text('down: ' + Math.round(downMotion*10)/10, 10, 55);
             text('side: ' + Math.round(sidewaysMotion*10)/10, 10, 80);
+
+            text('sidesdata: ' + sidesData.length, 20, 100);
+            text('downData: ' + downData.length, 20, 200);
+            sidesData.push(sidewaysMotion);
+            downData.push(downMotion);
+            if (sidesData.length >= 16) {
+                sidesData.shift();
+            }
+            if (downData.length >= 16) {
+                downData.shift();
+            }
+            for (let i = 0; i < 15; i++){
+                let sidesX_1 = map(i, 0, 14, 0, canvasWidth/2);
+                let sidesX_2 = map(i+1, 0, 14, 0, canvasWidth/2);
+                let sidesY_1 = map(sidesData[i], -5, 5,canvasHeight/6, canvasHeight/3);
+                let sidesY_2 = map(sidesData[i+1], -5, 5,canvasHeight/6, canvasHeight/3);
+                line(sidesX_1,sidesY_1,sidesX_2,sidesY_2);
+
+                let downX_1 = map(i, 0, 14, canvasWidth/2, canvasWidth);
+                let downX_2 = map(i+1, 0, 14, canvasWidth/2, canvasWidth);
+                let downY_1 = map(downData[i], -5, 5, canvasHeight/6, canvasHeight/3);
+                let downY_2 = map(downData[i+1], -5, 5, canvasHeight/6, canvasHeight/3);
+                line(downX_1,downY_1,downX_2,downY_2);
+
+            }
 
             const packet = {
                 downMotion,
