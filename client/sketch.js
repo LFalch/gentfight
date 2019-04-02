@@ -7,13 +7,11 @@ let joined = {
     right: false,
 }
 
-let raft, ocean_tiles;
+let raft;
 
 function preload() {
     raft = loadImage('assets/scenery/raft.png');
-    ocean_tiles = loadImage('assets/scenery/ocean_tiles.png');
 }
-
 
 function setup() {
     pLeft = new Player('left');
@@ -57,7 +55,7 @@ function draw() {
     pLeft.changeState();
     pRight.show();
     pRight.changeState();
-
+    noTint();
     
     if (!(joined.left && joined.right)) {
         textSize(30);
