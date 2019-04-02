@@ -52,7 +52,7 @@ function draw() {
     pLeft.changeState();
     pRight.show();
     pRight.changeState();
-
+    noTint();
     
     if (!(joined.left && joined.right)) {
         textSize(30);
