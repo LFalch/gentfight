@@ -2,11 +2,11 @@ function Vector(x, y, z) {
     if (x.x && x.y) {
         this.x = x.x;
         this.y = x.y;
-        this.z = x.z || 0;
+        this.z = x.z || 0;
     } else {
         this.x = x;
         this.y = y;
-        this.z = z || 0;
+        this.z = z || 0;
     }
 }
 
