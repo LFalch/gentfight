@@ -112,7 +112,7 @@ function draw() {
             while (downData.length > maxDataLength) {
                 downData.shift();
             }
-            for (let i = 0; i < sidesData.length; i++){
+            for (let i = 0; i < sidesData.length-1; i++){
                 let sidesX_1 = map(i, 0, sidesData.length, 0, canvasWidth/2);
                 let sidesX_2 = map(i+1, 0, sidesData.length, 0, canvasWidth/2);
                 let sidesY_1 = map(sidesData[i], -5, 5,canvasHeight/6, canvasHeight/3);
@@ -124,7 +124,6 @@ function draw() {
                 let downY_1 = map(downData[i], -5, 5, canvasHeight/6, canvasHeight/3);
                 let downY_2 = map(downData[i+1], -5, 5, canvasHeight/6, canvasHeight/3);
                 line(downX_1,downY_1,downX_2,downY_2);
-
             }
 
             const packet = {
