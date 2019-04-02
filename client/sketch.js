@@ -28,19 +28,20 @@ function setup() {
 function draw() {
     background(0, 119, 190);
 
-
     textSize(16);
     text("life: " + pLeft.lives, pLeft.x, pLeft.y-20);
     text("life: " + pRight.lives, pRight.x, pRight.y-20);
 
     noStroke();
-    rect(width-20-10*30, 20, 10*30, 40); //Background for 
-    rect(20, 20, 10*30, 40);
+    rect(width-20-10*30, 20, 10*30, 40); //Background for right player health bar
+    rect(20, 20, 10*30, 40);    //Background for left player health bar
 
+    //Right player health bar
     let hBarRight = map(pRight.lives,10,0,255,10);
     fill(255-hBarRight,hBarRight,0);
     rect(width-20-pRight.lives*30, 20, pRight.lives*30, 40);
 
+    //Left player health bar
     let hBarLeft = map(pLeft.lives,10,0,255,10);
     fill(255-hBarLeft, hBarLeft, 0);
     rect(20, 20, pLeft.lives*30, 40);
