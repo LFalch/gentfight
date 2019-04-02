@@ -20,7 +20,12 @@ function setup() {
     pRight = new Player('right');
     socket = io.connect(window.location.origin);
     createCanvas(800, 450);
-    socket.on('welcome', function({addr}) {
+    socket.on('welcome', function({addr, joinedSides}) {
+        if (joineds) {
+            for (side of joinedSides) {
+                joined[side] = true;
+            }
+        }
         server_address = addr;
     })
     socket.on('join', joinPlayer);
@@ -64,6 +69,10 @@ function draw() {
 function joinPlayer(data) {
     joined[data.side] = true;
     console.log(data.side + ' joined');
+}
+function leavePlayer(data) {
+    joined[data.side] = false;
+    console.log(data.side + ' left');
 }
 
 function playerAction(data){

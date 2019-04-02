@@ -2,12 +2,12 @@ let side;
 let socket = null;
 
 function socketInit() {
+    delete socketInit;
     socket = io.connect(window.location.origin);
     socket.on('assign', function(data) {
         console.log('Got a side', data);
         side = data.side;
     });
-    delete socketInit;
 }
 
 let unsupporteds = [];

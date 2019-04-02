@@ -32,7 +32,7 @@ io.sockets.on('connection',
     // If we don't have a server, assume first connector is the server
     if (!serverSocket) {
       console.log('Client connected');
-      socket.emit('welcome', {addr: ip + ':' + server.address().port});
+      socket.emit('welcome', {addr: ip + ':' + server.address().port, joinedSides: Object.keys(playerSockets)});
       serverSocket = socket;
       serverSocket.emit('welcome', {addr: ip})
       socket.on('disconnect', function() {
