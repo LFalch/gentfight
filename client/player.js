@@ -8,15 +8,12 @@ function imageFlip(img, x, y, w, h, sx, sy, sw, sh) {
 function Player(side, name){
     this.i = 0;
     this.state = "idle";
-    this.x = 400;
+    this.x = 350;
     this.y = 100;
     w = 96;
     h = 192;
     this.img_total = 4;
     this.speed = 30;
-    this.attackTime = 50;
-    this.blockTime = 70;
-    this.isBlocking = false;
     this.lives = 10;
     this.resetState = () => {
         this.state = "idle";
@@ -49,7 +46,7 @@ function Player(side, name){
                 this.resetState();
             }
             if (this.state == 'punching'){
-                if (this.attackTime <= this.i) {
+                if (this.speed*this.img_total*(5/6) <= this.i) {
                     fight(side);
                 }
             }
