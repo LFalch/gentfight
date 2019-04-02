@@ -32,7 +32,7 @@ function setup() {
 
 function draw() {
     background(0, 119, 190);
-
+    fill("black");
     textSize(16);
     text("life: " + pLeft.lives, pLeft.x, pLeft.y-20);
     text("life: " + pRight.lives, pRight.x, pRight.y-20);
@@ -55,9 +55,7 @@ function draw() {
     image(raft, width/2-raft.width/2, 228, raft.width, raft.height/2);
 
     pLeft.show();
-    pLeft.changeState();
     pRight.show();
-    pRight.changeState();
     noTint();
     
     if (!(joined.left && joined.right)) {
@@ -87,26 +85,18 @@ function playerAction(data){
         player = pRight;
         otherPlayer = pLeft;
     }
-    player.i = 0;
     switch (data.action) {
         case "punch":
-            player.state = "punching";
-            player.img = player.img_punching;
-            player.speed = 15;
+            player.changeState('punching');
         break;
         case "block":
-            player.state = "blocking";
-            player.img = player.img_blocking;
-            player.speed = 22;
-            player.img_total = 3;
-        break;
-        
-        default:
+            player.changeState('blocking');
         break;
     }
 }
-function fight(side) {
-    console.log(side + " is attacking");
+
+/// Decreases life of other player if punch succeeds.
+function doPunch(side) {
     let otherPlayer;
     let player;
     if (side == 'left'){

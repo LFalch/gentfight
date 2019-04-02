@@ -1,6 +1,8 @@
 let side;
 let socket = null;
-
+let buttonStartY = window.innerHeight/2;
+let canvasWidth = window.innerWidth-window.innerWidth*1/20;
+let canvasHeight = window.innerHeight-window.innerHeight*1/20;
 function socketInit() {
     delete socketInit;
     socket = io.connect(window.location.origin);
@@ -53,22 +55,37 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(800, 450);
+    createCanvas(canvasWidth, canvasHeight);
+    punchButtonX = 0;
+    blockButtonX = canvasWidth/2;
+    buttonWidth = canvasWidth/2;
+    buttonHeight = canvasHeight-buttonStartY;
 }
 
 function draw() {
-    background('white');
+    background('grey');
+    //Punch button
+    fill('red');
+    rect(punchButtonX,buttonStartY,buttonWidth,buttonHeight); 
+    //Block Button
+    fill('green');
+    rect(blockButtonX,buttonStartY,buttonWidth,buttonHeight);
     fill('black');
-    
+    textSize(32);
+    text('Punch',punchButtonX+200,buttonStartY+canvasHeight/4);
+    text('Block',blockButtonX+200,buttonStartY+canvasHeight/4);
+    fill('white');
+    rect(canvasWidth/8,canvasHeight/6,canvasWidth-canvasWidth/4,canvasHeight/3);
+
     if (unsupporteds.length > 0) {
         textSize(12);
         text('Unsupported features: ' + unsupporteds, 2, 14);
     }
     textSize(25);
     if (!socket) {
-        text('Click to join', 10, 34); 
+        text('Click to join', canvasWidth/2-50, 100); 
     } else {
-        text(side, 10, 30);
+        text(side, canvasWidth/2-20, 100);
 
         const downDir = accelerationWithGrav.sub(acceleration).normalise();
         const downMotion = acceleration.dot(downDir ? downDir : new Vector(0, 0, 0));
@@ -88,5 +105,30 @@ function draw() {
 }
 
 function mouseReleased() {
-    socketInit()
+    if (!socket){
+        socketInit();
+    }
+    if (                            //punch button
+        mouseX > punchButtonX &&
+        mouseX < punchButtonX+buttonWidth &&
+        mouseY > buttonStartY &&
+        mouseY < buttonStartY+buttonHeight
+      ) {
+        const data = {
+            side: side,
+            action: 'punch',
+        }
+        socket.emit('action', data);
+      } else if (                            //Block button
+        mouseX > blockButtonX &&
+        mouseX < blockButtonX+buttonWidth &&
+        mouseY > buttonStartY &&
+        mouseY < buttonStartY+buttonHeight
+      ) {
+        const data = {
+            side: side,
+            action: 'block',
+        }
+        socket.emit('action', data);
+      }
 }
