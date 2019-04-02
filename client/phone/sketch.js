@@ -64,7 +64,6 @@ function draw() {
         textSize(12);
         text('Unsupported features: ' + unsupporteds, 2, 14);
     }
-    
     textSize(25);
     if (!socket) {
         text('Click to join', 10, 34); 
