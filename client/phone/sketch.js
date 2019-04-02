@@ -65,16 +65,17 @@ function setup() {
 function draw() {
     background('grey');
     //Punch button
-    fill("red");
+    fill('red');
     rect(punchButtonX,buttonStartY,buttonWidth,buttonHeight); 
     //Block Button
-    fill("green");
+    fill('green');
     rect(blockButtonX,buttonStartY,buttonWidth,buttonHeight);
     fill('black');
     textSize(32);
-    text("Punch",punchButtonX+200,buttonStartY+canvasWidth/4);
-    text("Block",blockButtonX+200,buttonStartY+canvasWidth/4);
-
+    text('Punch',punchButtonX+200,buttonStartY+canvasHeight/4);
+    text('Block',blockButtonX+200,buttonStartY+canvasHeight/4);
+    fill('white');
+    rect(canvasWidth/8,canvasHeight/6,canvasWidth-canvasWidth/4,canvasHeight/3);
 
     if (unsupporteds.length > 0) {
         textSize(12);
