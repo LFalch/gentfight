@@ -6,6 +6,7 @@ let canvasHeight = window.innerHeight-window.innerHeight*1/20;
 
 let sidesData = [];
 let downData = [];
+const maxDataLength = 250;
 
 function socketInit() {
     delete socketInit;
@@ -105,28 +106,26 @@ function draw() {
             text('downData: ' + downData.length, 20, 200);
             sidesData.push(sidewaysMotion);
             downData.push(downMotion);
-            if (sidesData.length >= 16) {
+            while (sidesData.length > maxDataLength) {
                 sidesData.shift();
             }
-            if (downData.length >= 16) {
+            while (downData.length > maxDataLength) {
                 downData.shift();
             }
-            for (let i = 0; i < 15; i++){
-                
+            for (let i = 0; i < sidesData.length-1; i++){
                 let graph0_y = map(0, -5, 5, canvasHeight/6, canvasHeight/3);
                 line(0,graph0_y,canvasWidth,graph0_y);
-                let sidesX_1 = map(i, 0, 14, 0, canvasWidth/2);
-                let sidesX_2 = map(i+1, 0, 14, 0, canvasWidth/2);
-                let sidesY_1 = map(sidesData[i], -5, 5, canvasHeight/6, canvasHeight/3);
-                let sidesY_2 = map(sidesData[i+1], -5, 5, canvasHeight/6, canvasHeight/3);
+                let sidesX_1 = map(i, 0, sidesData.length, 0, canvasWidth/2);
+                let sidesX_2 = map(i+1, 0, sidesData.length, 0, canvasWidth/2);
+                let sidesY_1 = map(sidesData[i], -5, 5,canvasHeight/6, canvasHeight/3);
+                let sidesY_2 = map(sidesData[i+1], -5, 5,canvasHeight/6, canvasHeight/3);
                 line(sidesX_1,sidesY_1,sidesX_2,sidesY_2);
 
-                let downX_1 = map(i, 0, 14, canvasWidth/2, canvasWidth);
-                let downX_2 = map(i+1, 0, 14, canvasWidth/2, canvasWidth);
+                let downX_1 = map(i, 0, downData.length, canvasWidth/2, canvasWidth);
+                let downX_2 = map(i+1, 0, downData.length, canvasWidth/2, canvasWidth);
                 let downY_1 = map(downData[i], -5, 5, canvasHeight/6, canvasHeight/3);
                 let downY_2 = map(downData[i+1], -5, 5, canvasHeight/6, canvasHeight/3);
                 line(downX_1,downY_1,downX_2,downY_2);
-
             }
 
             const packet = {
