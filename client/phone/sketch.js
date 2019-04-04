@@ -114,18 +114,18 @@ function draw() {
                 downData.shift();
             }
             for (let i = 0; i < sidesData.length-1; i++){
-                let graph0_y = map(0, -5, 5, canvasHeight/6, canvasHeight/3);
+                const graph0_y = map(0, -5, 5, canvasHeight / 3, canvasHeight / 6);
                 line(0,graph0_y,canvasWidth,graph0_y);
-                let sidesX_1 = map(i, 0, sidesData.length, 0, canvasWidth/2);
-                let sidesX_2 = map(i+1, 0, sidesData.length, 0, canvasWidth/2);
-                let sidesY_1 = map(sidesData[i], -5, 5,canvasHeight/6, canvasHeight/3);
-                let sidesY_2 = map(sidesData[i+1], -5, 5,canvasHeight/6, canvasHeight/3);
+                const sidesX_1 = map(i, 0, sidesData.length, canvasWidth / 2, 0);
+                const sidesX_2 = map(i + 1, 0, sidesData.length, canvasWidth / 2, 0);
+                const sidesY_1 = map(sidesData[i], -5, 5, canvasHeight / 3, canvasHeight / 6);
+                const sidesY_2 = map(sidesData[i + 1], -5, 5, canvasHeight / 3, canvasHeight / 6);
                 line(sidesX_1,sidesY_1,sidesX_2,sidesY_2);
 
-                let downX_1 = map(i, 0, downData.length, canvasWidth/2, canvasWidth);
-                let downX_2 = map(i+1, 0, downData.length, canvasWidth/2, canvasWidth);
-                let downY_1 = map(downData[i], -5, 5, canvasHeight/6, canvasHeight/3);
-                let downY_2 = map(downData[i+1], -5, 5, canvasHeight/6, canvasHeight/3);
+                const downX_1 = map(i, 0, downData.length, canvasWidth, canvasWidth/2);
+                const downX_2 = map(i + 1, 0, downData.length, canvasWidth, canvasWidth / 2);
+                const downY_1 = map(downData[i], -5, 5, canvasHeight / 3, canvasHeight / 6);
+                const downY_2 = map(downData[i + 1], -5, 5, canvasHeight / 3, canvasHeight / 6);
                 line(downX_1,downY_1,downX_2,downY_2);
             }
 
