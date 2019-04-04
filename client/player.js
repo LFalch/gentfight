@@ -56,7 +56,7 @@ function Player(side, name){
     this.lives = 10;
     this.resetState = () => {
         this.state = 'idle';
-        this.anim.resetImg(this.img_idle, 4, 1, 30);
+        this.anim.resetImg(this.img_idle, 4, 1, 12);
         console.log('reset');
     }
     if (side == 'left') {
@@ -83,7 +83,7 @@ function Player(side, name){
             if (this.state != 'idle') {
                 return
             }
-            this.anim.resetImg(this.img_punching, 4, 1, 15);
+            this.anim.resetImg(this.img_punching, 4, 1, 6);
             this.anim.onAnimationOver(() => {
                 doPunch(this.side);
                 this.resetState();
@@ -93,7 +93,7 @@ function Player(side, name){
             if (this.state != 'idle') {
                 return
             }
-            this.anim.resetImg(this.img_blocking, 3, 1, 30);
+            this.anim.resetImg(this.img_blocking, 3, 1, 15);
             this.anim.onAnimationOver(this.resetState);
             break;
         }

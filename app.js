@@ -14,6 +14,17 @@ function listen() {
   console.log('App listening at http://' + ip + ':' + port);
 }
 
+let outputCbs = [];
+
+osc_server.on('message', function (msg) {
+  if (msg[0] == '/wek/outputs') {
+    const cb = outputCbs.shift();
+    if (cb) {
+      cb(msg[1]);
+    }
+  }
+});
+
 app.use(express.static('client'));
 
 // WebSockets
@@ -22,6 +33,8 @@ const io = require('socket.io').listen(server);
 let sides = ['right', 'left'];
 let playerSockets = {};
 let serverSocket = null;
+
+let isRecording = false;
 
 // This is run for each individual user that connects
 io.sockets.on('connection',
@@ -35,6 +48,11 @@ io.sockets.on('connection',
       socket.emit('welcome', {addr: ip + ':' + server.address().port, joinedSides: Object.keys(playerSockets)});
       serverSocket = socket;
       serverSocket.emit('welcome', {addr: ip})
+      serverSocket.on('record', () => {
+        wekControl('stopRunning');
+        wekControl('startRecording');
+        isRecording = true;
+      });
       socket.on('disconnect', function() {
         serverSocket = null;
         console.log("Client has disconnected");
@@ -53,13 +71,51 @@ io.sockets.on('connection',
       socket.emit('assign', {side: side});
     }
     
+    socket.motionData = {
+      downs: [],
+      sides: [],
+    };
     playerSockets[side] = socket;
 
     socket.on('motion',
       function(data) {
         if (data.downMotion) {
-          const msg = new osc.Message('/wek/inputs', data.downMotion, data.sidewaysMotion);
+          socket.motionData.downs.push(data.downMotion);
+          socket.motionData.sides.push(data.sidewaysMotion);
+          if (socket.motionData.downs.length > 20) {
+            socket.motionData.downs.shift();
+            socket.motionData.sides.shift();
+            socket.motionData.side = side;
+            serverSocket.emit('motionData', socket.motionData);
+          }
+          const msg = new osc.Message('/wek/inputs', socket.motionData.downs, socket.motionData.downs);
           osc_client.send(msg);
+          if (isRecording) {
+            isRecording = false;
+            wekControl('stopRecording');
+            wekControl('train');
+            wekControl('startRunning');
+          } else {
+            outputCbs.push((wekClass) => {
+              switch (wekClass) {
+                case 2:
+                serverSocket.emit('action', {side, action: 'punch'});
+                break;
+                case 3:
+                serverSocket.emit('action', {side, action: 'block'});
+                break;
+              } 
+            });
+            while (outputCbs.length > 2) {
+              outputCbs.shift();
+            }
+          }
+
+          // if (data.downMotion > 25) {
+          //   serverSocket.emit('action', {side, action: 'block'});
+          // } else if (data.sidewaysMotion > 25) {
+          //   serverSocket.emit('action', {side, action: 'punch'});
+          // }
         }
       }
     );
@@ -77,3 +133,8 @@ io.sockets.on('connection',
     );
   }
 );
+
+function wekControl(msg, ...args) {
+  const msg = new osc.Message('/wekinator/control/' + msg, args);
+  return osc_client.send(msg);
+}
