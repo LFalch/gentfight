@@ -77,6 +77,10 @@ io.sockets.on('connection',
     };
     playerSockets[side] = socket;
 
+    socket.on('record', function() {
+      isRecording = true;
+      wekControl('startRecording');
+    });
     socket.on('motion',
       function(data) {
         if (data.downMotion) {
@@ -135,6 +139,6 @@ io.sockets.on('connection',
 );
 
 function wekControl(msg, ...args) {
-  const msg = new osc.Message('/wekinator/control/' + msg, args);
-  return osc_client.send(msg);
+  const msg_obj = new osc.Message('/wekinator/control/' + msg, args);
+  return osc_client.send(msg_obj);
 }
