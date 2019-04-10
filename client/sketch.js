@@ -7,6 +7,10 @@ let joined = {
     right: false,
 }
 
+//det her er en variable som vi bruger om lidt
+let qrcode; 
+let div;
+
 let raft;
 
 function preload() {
@@ -14,6 +18,11 @@ function preload() {
 }
 
 function setup() {
+    
+    div = createDiv("");
+    div.id("qrcode");
+    qrcode = new QRCode("qrcode");
+
     pLeft = new Player('left');
     pRight = new Player('right');
     socket = io.connect(window.location.origin);
@@ -28,6 +37,12 @@ function setup() {
     })
     socket.on('join', joinPlayer);
     socket.on('action', playerAction);
+}
+
+function makeCode() {
+    let url = "https://www.youtube.com/watch?v=axgHoE89Z3Y"
+
+    qrcode.makeCode(url);
 }
 
 function draw() {
