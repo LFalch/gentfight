@@ -19,10 +19,6 @@ function preload() {
 
 function setup() {
     
-    div = createDiv("");
-    div.id("qrcode");
-    qrcode = new QRCode("qrcode");
-
     pLeft = new Player('left');
     pRight = new Player('right');
     socket = io.connect(window.location.origin);
@@ -37,6 +33,20 @@ function setup() {
     })
     socket.on('join', joinPlayer);
     socket.on('action', playerAction);
+
+    div = createDiv("");
+    div.id("qrcode");
+
+    div.style("width", "256px");
+    div.style("height", "256px");
+    div.style("padding", "2px");
+    div.style("background-color", "grey");
+    div.position(10,10);
+
+    
+
+
+    qrcode = new QRCode("qrcode");
 }
 
 function makeCode() {
@@ -128,6 +138,23 @@ function doPunch(side) {
 }
 
 function keyPressed () {
+    if(key == '0') {
+    
+        div.remove();
+        
+        div = createDiv("");
+        div.id("qrcode");
+        
+        div.position(0,0);
+      
+          qrcode = new QRCode("qrcode");
+      }
+      else if (key == '1') {
+        makeCode();
+      }
+
+
+
     if (keyCode == LEFT_ARROW) {
         let data = {
             side: 'left',
