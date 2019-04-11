@@ -50,7 +50,7 @@ function setup() {
 }
 
 function makeCode() {
-    let url = "https://www.youtube.com/watch?v=axgHoE89Z3Y"
+    const url = `http://${server_address}:3000/phone/`;
 
     qrcode.makeCode(url);
 }
