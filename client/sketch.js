@@ -123,6 +123,7 @@ function doPunch(side) {
     }
     if (otherPlayer.state != 'blocking'){
         player.resetState();
+        otherPlayer.changeState('damaged');
         otherPlayer.lives -= 1;
     }
 }
