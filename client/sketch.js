@@ -30,6 +30,10 @@ function setup() {
             }
         }
         server_address = addr;
+
+        const url = `http://${server_address}:3000/phone/`;
+
+        qrcode.makeCode(url);
     })
     socket.on('join', joinPlayer);
     socket.on('action', playerAction);
@@ -40,20 +44,14 @@ function setup() {
     div.style("width", "256px");
     div.style("height", "256px");
     div.style("padding", "2px");
-    div.style("background-color", "grey");
-    div.position(10,10);
-
-    
+    div.position(300,160);
 
 
     qrcode = new QRCode("qrcode");
+
+   
 }
 
-function makeCode() {
-    const url = `http://${server_address}:3000/phone/`;
-
-    qrcode.makeCode(url);
-}
 
 function draw() {
     background(0, 119, 190);
@@ -87,6 +85,8 @@ function draw() {
         textSize(30);
         fill('black');
         text('Waiting for all players on ' + server_address, 150, 125);
+    } else {
+        div.remove();
     }
 }
 
@@ -145,7 +145,7 @@ function keyPressed () {
         div = createDiv("");
         div.id("qrcode");
         
-        div.position(0,0);
+        div.position(300,160);
       
           qrcode = new QRCode("qrcode");
       }
