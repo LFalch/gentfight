@@ -89,6 +89,15 @@ function Player(side, name){
                 this.resetState();
             });
             break;
+            case 'damaged':
+            if (this.state == 'blocking') {
+                return
+            }
+            this.anim.resetImg(this.img_damaged, 3, 1, 15);
+            this.anim.onAnimationOver(() => {
+                this.resetState();
+            });
+            break;
             case 'blocking':
             if (this.state != 'idle') {
                 return
@@ -102,6 +111,7 @@ function Player(side, name){
     this.name = name;
     this.img_blocking = loadImage('assets/character_template/block_temp.png');
     this.img_punching = loadImage('assets/character_template/punch_temp.png');
+    this.img_damaged = loadImage('assets/character_template/damage.png');
     this.anim = {
         draw: () => {
             console.log('still loading');

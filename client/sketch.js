@@ -7,6 +7,10 @@ let joined = {
     right: false,
 }
 
+//det her er en variable som vi bruger om lidt
+let qrcode; 
+let div;
+
 let raft;
 
 let motionDatas = {};
@@ -16,6 +20,7 @@ function preload() {
 }
 
 function setup() {
+    
     pLeft = new Player('left');
     pRight = new Player('right');
     socket = io.connect(window.location.origin);
@@ -27,12 +32,27 @@ function setup() {
             }
         }
         server_address = addr;
+
+        const url = `http://${server_address}:3000/phone/`;
+
+        qrcode.makeCode(url);
     })
     socket.on('join', joinPlayer);
     socket.on('action', playerAction);
     socket.on('motionData', ({side, sides, downs}) => {
         motionDatas[side] = {sides, downs};
     });
+
+    div = createDiv("");
+    div.id("qrcode");
+
+    div.style("width", "256px");
+    div.style("height", "256px");
+    div.style("padding", "2px");
+    div.position(300,160);
+
+
+    qrcode = new QRCode("qrcode");
 }
 
 function draw() {
@@ -121,6 +141,8 @@ function draw() {
         textSize(30);
         fill('black');
         text('Waiting for all players on ' + server_address, 150, 125);
+    } else {
+        div.remove();
     }
 }
 
@@ -167,6 +189,7 @@ function doPunch(side) {
     }
     if (otherPlayer.state != 'blocking'){
         player.resetState();
+        otherPlayer.changeState('damaged');
         otherPlayer.lives -= 1;
     }
 }
@@ -174,5 +197,34 @@ function doPunch(side) {
 function keyPressed () {
     if (key == 'r' || key == 'R') {
         socket.emit('record', {});
+    }
+
+    if (keyCode == LEFT_ARROW) {
+        let data = {
+            side: 'left',
+            action: 'punch',
+        }
+        playerAction(data);
+    }
+    if (keyCode == UP_ARROW) {
+        let data = {
+            side: 'left',
+            action: 'block',
+        }
+        playerAction(data);
+    }
+    if (keyCode == RIGHT_ARROW) {
+        let data = {
+            side: 'right',
+            action: 'punch',
+        }
+        playerAction(data);
+    }
+    if (keyCode == DOWN_ARROW) {
+        let data = {
+            side: 'right',
+            action: 'block',
+        }
+        playerAction(data);
     }
 }
