@@ -33,7 +33,7 @@ function setup() {
         }
         server_address = addr;
 
-        const url = `http://${server_address}:3000/phone/`;
+        const url = `https://${server_address}:3000/phone/`;
 
         qrcode.makeCode(url);
     })

@@ -1,8 +1,17 @@
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
 const osc = require('node-osc');
 const app = express();
 
-const server = app.listen(3000, '0.0.0.0', listen);
+// This line is from the Node.js HTTPS documentation.
+const options = {
+  key: fs.readFileSync('./client-key.pem'),
+  cert: fs.readFileSync('./client-cert.pem')
+};
+
+// Create an HTTPS service.
+const server = https.createServer(options, app).listen(3000, '0.0.0.0', listen);
 const ip = require('ip').address();
 
 const osc_client = new osc.Client('127.0.0.1', 6448);
@@ -11,7 +20,7 @@ const osc_server = new osc.Server(12000, '127.0.0.1');
 // This callback just tells us that the server has started
 function listen() {
   const port = server.address().port;
-  console.log('App listening at http://' + ip + ':' + port);
+  console.log('App listening at https://' + ip + ':' + port);
 }
 
 let outputCbs = [];
