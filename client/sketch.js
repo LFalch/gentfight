@@ -19,10 +19,6 @@ function preload() {
 
 function setup() {
     
-    div = createDiv("");
-    div.id("qrcode");
-    qrcode = new QRCode("qrcode");
-
     pLeft = new Player('left');
     pRight = new Player('right');
     socket = io.connect(window.location.origin);
@@ -34,16 +30,28 @@ function setup() {
             }
         }
         server_address = addr;
+
+        const url = `http://${server_address}:3000/phone/`;
+
+        qrcode.makeCode(url);
     })
     socket.on('join', joinPlayer);
     socket.on('action', playerAction);
+
+    div = createDiv("");
+    div.id("qrcode");
+
+    div.style("width", "256px");
+    div.style("height", "256px");
+    div.style("padding", "2px");
+    div.position(300,160);
+
+
+    qrcode = new QRCode("qrcode");
+
+   
 }
 
-function makeCode() {
-    let url = "https://www.youtube.com/watch?v=axgHoE89Z3Y"
-
-    qrcode.makeCode(url);
-}
 
 function draw() {
     background(0, 119, 190);
@@ -77,6 +85,8 @@ function draw() {
         textSize(30);
         fill('black');
         text('Waiting for all players on ' + server_address, 150, 125);
+    } else {
+        div.remove();
     }
 }
 
@@ -135,6 +145,23 @@ function doPunch(side) {
 }
 
 function keyPressed () {
+    if(key == '0') {
+    
+        div.remove();
+        
+        div = createDiv("");
+        div.id("qrcode");
+        
+        div.position(300,160);
+      
+          qrcode = new QRCode("qrcode");
+      }
+      else if (key == '1') {
+        makeCode();
+      }
+
+
+
     if (keyCode == LEFT_ARROW) {
         let data = {
             side: 'left',
