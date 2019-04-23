@@ -121,10 +121,16 @@ function doPunch(side) {
         player = pRight;
         otherPlayer = pLeft;
     }
+    if (otherPlayer.state == 'blocking'){
+        player.changeState('stunned');
+    }
     if (otherPlayer.state != 'blocking'){
-        player.resetState();
-        otherPlayer.changeState('damaged');
         otherPlayer.lives -= 1;
+        if (otherPlayer.lives <= 0) {
+            otherPlayer.changeState('dead');
+        } else {
+            otherPlayer.changeState('damaged');
+        }
     }
 }
 

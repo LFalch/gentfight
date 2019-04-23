@@ -38,7 +38,6 @@ function AnimationSpritesheet(img, columns, rows, step) {
     this.draw = (x, y, w, h) => {
         let i = Math.floor(this.i++ / this.step);
         image(this.img, x, y, w || this.tileWidth, h || this.tileHeight, i*this.tileWidth, this.j*this.tileHeight, this.tileWidth, this.tileHeight);
-
         this.i %= this.columns * this.step;
         if (this.i == 0) {
             this.onAnimOver();
@@ -63,14 +62,22 @@ function Player(side, name){
         this.x = 304;
         this.show = () => {
             tint('red');
-            this.anim.draw(this.x, this.y);
+            let x_offset = 0;
+            if (this.state == 'dead'){
+                x_offset = -96;
+            }
+            this.anim.draw(this.x+x_offset, this.y);
         };
     } else {
         this.x = 400;
         this.show = () => {
             tint('blue');
             imageFlip();
-            this.anim.draw(this.x, this.y);
+            let x_offset = 0;
+            if (this.state == 'dead'){
+                x_offset = 96;
+            }
+            this.anim.draw(this.x+x_offset, this.y);
             imageFlip();
         };
     }
@@ -85,8 +92,8 @@ function Player(side, name){
             }
             this.anim.resetImg(this.img_punching, 4, 1, 15);
             this.anim.onAnimationOver(() => {
-                doPunch(this.side);
                 this.resetState();
+                doPunch(this.side);
             });
             break;
             case 'damaged':
@@ -98,6 +105,12 @@ function Player(side, name){
                 this.resetState();
             });
             break;
+            case 'stunned':
+            this.anim.resetImg(this.img_stunned, 3, 1, 20);
+            this.anim.onAnimationOver(() => {
+                this.resetState();
+            });
+            break;
             case 'blocking':
             if (this.state != 'idle') {
                 return
@@ -105,13 +118,18 @@ function Player(side, name){
             this.anim.resetImg(this.img_blocking, 3, 1, 30);
             this.anim.onAnimationOver(this.resetState);
             break;
+            case 'dead':
+            this.anim.resetImg(this.img_dead, 3, 1, 20);
+            break;
         }
         this.state = state;
     }
     this.name = name;
     this.img_blocking = loadImage('assets/character_template/block_temp.png');
     this.img_punching = loadImage('assets/character_template/punch_temp.png');
+    this.img_stunned = loadImage('assets/character_template/stunned.png');
     this.img_damaged = loadImage('assets/character_template/damage.png');
+    this.img_dead = loadImage('assets/character_template/death.png');
     this.anim = {
         draw: () => {
             console.log('still loading');
