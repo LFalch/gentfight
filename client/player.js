@@ -59,7 +59,7 @@ function Player(side, name){
         console.log('reset');
     }
     if (side == 'left') {
-        this.x = 304;
+        this.x = 304+40;
         this.show = () => {
             tint('red');
             let x_offset = 0;
