@@ -119,7 +119,10 @@ function Player(side, name){
             this.anim.onAnimationOver(this.resetState);
             break;
             case 'dead':
-            this.anim.resetImg(this.img_dead, 3, 1, 20);
+            this.anim.resetImg(this.img_dying, 3, 1, 20);
+            this.anim.onAnimationOver(() => {
+                this.anim.resetImg(this.img_dead, 1, 1, 100);
+            });
             break;
         }
         this.state = state;
@@ -129,7 +132,8 @@ function Player(side, name){
     this.img_punching = loadImage('assets/character_template/punch_temp.png');
     this.img_stunned = loadImage('assets/character_template/stunned.png');
     this.img_damaged = loadImage('assets/character_template/damage.png');
-    this.img_dead = loadImage('assets/character_template/death.png');
+    this.img_dying = loadImage('assets/character_template/death.png');
+    this.img_dead = loadImage('assets/character_template/dead.png');
     this.anim = {
         draw: () => {
             console.log('still loading');
