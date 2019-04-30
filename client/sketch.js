@@ -13,12 +13,13 @@ let div;
 
 let raft;
 
+let motionDatas = {};
+
 function preload() {
     raft = loadImage('assets/scenery/raft.png');
 }
 
 function setup() {
-    
     pLeft = new Player('left');
     pRight = new Player('right');
     socket = io.connect(window.location.origin);
@@ -31,12 +32,15 @@ function setup() {
         }
         server_address = addr;
 
-        const url = `http://${server_address}:3000/phone/`;
+        const url = `https://${server_address}:3000/phone/`;
 
         qrcode.makeCode(url);
     })
     socket.on('join', joinPlayer);
     socket.on('action', playerAction);
+    socket.on('motionData', ({side, sides, downs}) => {
+        motionDatas[side] = {sides, downs};
+    });
 
     div = createDiv("");
     div.id("qrcode");
@@ -48,10 +52,7 @@ function setup() {
 
 
     qrcode = new QRCode("qrcode");
-
-   
 }
-
 
 function draw() {
     background(0, 119, 190);
@@ -69,10 +70,64 @@ function draw() {
     fill(255-hBarRight,hBarRight,0);
     rect(width-20-pRight.lives*30, 20, pRight.lives*30, 40);
 
+    if (motionDatas.right) {
+        stroke(0);
+        const rect = {
+            x: width-55,
+            y: 250,
+            w: 50,
+            h: 200,
+        };
+        const sidesData = motionDatas.right.sides;
+        const downData = motionDatas.right.downs;
+
+        for (let i = 0; i < sidesData.length - 1; i++) {
+            const sidesX_1 = map(i, 0, sidesData.length, rect.x, rect.x + rect.w);
+            const sidesX_2 = map(i + 1, 0, sidesData.length, rect.x, rect.x + rect.w);
+            const sidesY_1 = map(sidesData[i], 0, 10, rect.y + rect.h / 2, rect.y);
+            const sidesY_2 = map(sidesData[i + 1], 0, 10, rect.y + rect.h / 2, rect.y);
+            line(sidesX_1, sidesY_1, sidesX_2, sidesY_2);
+
+            const downX_1 = map(i, 0, downData.length, rect.x, rect.x + rect.w);
+            const downX_2 = map(i + 1, 0, downData.length, rect.x, rect.x + rect.w);
+            const downY_1 = map(downData[i], -5, 5, rect.y + rect.h, rect.y + rect.h/2);
+            const downY_2 = map(downData[i + 1], -5, 5, rect.y + rect.h, rect.y + rect.h/2);
+            line(downX_1, downY_1, downX_2, downY_2);
+        }
+        noStroke();
+    }
+    
     //Left player health bar
     let hBarLeft = map(pLeft.lives,10,0,255,10);
     fill(255-hBarLeft, hBarLeft, 0);
     rect(20, 20, pLeft.lives*30, 40);
+    
+    if (motionDatas.left) {
+        stroke(0);
+        const rect = {
+            x: 5,
+            y: 250,
+            w: 50,
+            h: 200,
+        };
+        const sidesData = motionDatas.left.sides;
+        const downData = motionDatas.left.downs;
+
+        for (let i = 0; i < sidesData.length - 1; i++) {
+            const sidesX_1 = map(i, 0, sidesData.length, rect.x, rect.x + rect.w);
+            const sidesX_2 = map(i + 1, 0, sidesData.length, rect.x, rect.x + rect.w);
+            const sidesY_1 = map(sidesData[i], 0, 10, rect.y + rect.h / 2, rect.y);
+            const sidesY_2 = map(sidesData[i + 1], 0, 10, rect.y + rect.h / 2, rect.y);
+            line(sidesX_1, sidesY_1, sidesX_2, sidesY_2);
+
+            const downX_1 = map(i, 0, downData.length, rect.x, rect.x + rect.w);
+            const downX_2 = map(i + 1, 0, downData.length, rect.x, rect.x + rect.w);
+            const downY_1 = map(downData[i], -5, 5, rect.y + rect.h, rect.y + rect.h / 2);
+            const downY_2 = map(downData[i + 1], -5, 5, rect.y + rect.h, rect.y + rect.h / 2);
+            line(downX_1, downY_1, downX_2, downY_2);
+        }
+        noStroke();
+    }
 
     noFill();
     image(raft, width/2-raft.width/2, 228, raft.width, raft.height/2);
@@ -145,49 +200,7 @@ function doPunch(side) {
 }
 
 function keyPressed () {
-    if(key == '0') {
-    
-        div.remove();
-        
-        div = createDiv("");
-        div.id("qrcode");
-        
-        div.position(300,160);
-      
-          qrcode = new QRCode("qrcode");
-      }
-      else if (key == '1') {
-        makeCode();
-      }
-
-
-
-    if (keyCode == LEFT_ARROW) {
-        let data = {
-            side: 'left',
-            action: 'punch',
-        }
-        playerAction(data);
-    }
-    if (keyCode == UP_ARROW) {
-        let data = {
-            side: 'left',
-            action: 'block',
-        }
-        playerAction(data);
-    }
-    if (keyCode == RIGHT_ARROW) {
-        let data = {
-            side: 'right',
-            action: 'punch',
-        }
-        playerAction(data);
-    }
-    if (keyCode == DOWN_ARROW) {
-        let data = {
-            side: 'right',
-            action: 'block',
-        }
-        playerAction(data);
+    if (key == 'r' || key == 'R') {
+        socket.emit('record', {});
     }
 }
