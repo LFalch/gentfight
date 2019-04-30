@@ -95,7 +95,7 @@ io.sockets.on('connection',
         if (data.downMotion) {
           socket.motionData.downs.push(data.downMotion);
           socket.motionData.sides.push(data.sidewaysMotion);
-          if (socket.motionData.downs.length > 20) {
+          if (socket.motionData.downs.length > 10) {
             socket.motionData.downs.shift();
             socket.motionData.sides.shift();
             socket.motionData.side = side;
