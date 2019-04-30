@@ -56,7 +56,7 @@ function Player(side, name){
     this.lives = 10;
     this.resetState = () => {
         this.state = 'idle';
-        this.anim.resetImg(this.img_idle, 4, 1, 30);
+        this.anim.resetImg(this.img_idle, 1, 1, 30);
         console.log('reset');
     }
     if (side == 'left') {
@@ -107,7 +107,7 @@ function Player(side, name){
             console.log('still loading');
         }
     };
-    this.img_idle = loadImage('assets/character_template/idle_temp_2.png', (img) => {
-        this.anim = new AnimationSpritesheet(img, 4, 1, 30);
+    this.img_idle = loadImage('assets/character_template/idle_temp.png', (img) => {
+        this.anim = new AnimationSpritesheet(img, 1, 1, 30);
     });
 }
