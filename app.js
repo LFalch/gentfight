@@ -111,10 +111,10 @@ io.sockets.on('connection',
           } else {
             outputCbs.push((wekClass) => {
               switch (wekClass) {
-                case 2:
+                case 1:
                 serverSocket.emit('action', {side, action: 'punch'});
                 break;
-                case 3:
+                case 2:
                 serverSocket.emit('action', {side, action: 'block'});
                 break;
               } 

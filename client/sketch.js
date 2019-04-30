@@ -20,7 +20,6 @@ function preload() {
 }
 
 function setup() {
-    
     pLeft = new Player('left');
     pRight = new Player('right');
     socket = io.connect(window.location.origin);
@@ -197,34 +196,5 @@ function doPunch(side) {
 function keyPressed () {
     if (key == 'r' || key == 'R') {
         socket.emit('record', {});
-    }
-
-    if (keyCode == LEFT_ARROW) {
-        let data = {
-            side: 'left',
-            action: 'punch',
-        }
-        playerAction(data);
-    }
-    if (keyCode == UP_ARROW) {
-        let data = {
-            side: 'left',
-            action: 'block',
-        }
-        playerAction(data);
-    }
-    if (keyCode == RIGHT_ARROW) {
-        let data = {
-            side: 'right',
-            action: 'punch',
-        }
-        playerAction(data);
-    }
-    if (keyCode == DOWN_ARROW) {
-        let data = {
-            side: 'right',
-            action: 'block',
-        }
-        playerAction(data);
     }
 }
