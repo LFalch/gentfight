@@ -12,6 +12,7 @@ let qrcode;
 let qrDiv;
 
 let raft;
+const movesToRingOut = 5;
 let playersDisplacement = 0;
 
 let motionDatas = {};
@@ -204,6 +205,10 @@ function doPunch(side) {
         } else {
             otherPlayer.changeState('damaged');
         }
+    }
+
+    if (Math.abs(playersDisplacement) >= movesToRingOut) {
+        otherPlayer.changeState('dead');
     }
 }
 
