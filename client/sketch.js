@@ -213,7 +213,7 @@ function doPunch(side) {
 }
 
 function keyPressed () {
-    if (key == 'r' || key == 'R') {
+    if (key == 'R') {
         socket.emit('record', {});
     }
 }
