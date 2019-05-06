@@ -167,7 +167,7 @@ function draw() {
 
 function readyPlayer(data) {
     ready[data.side] = true;
-    console.log(data.side + 'is ready');
+    console.log(data.side + ' is ready');
 }
 
 function joinPlayer(data) {
