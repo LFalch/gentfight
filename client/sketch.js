@@ -17,7 +17,7 @@ let playersDisplacement = 0;
 let motionDatas = {};
 
 function preload() {
-    raft = loadImage('assets/scenery/raft.png');
+    raft = loadImage('assets/scenery/raft1.png');
 }
 
 function setup() {
@@ -151,6 +151,7 @@ function joinPlayer(data) {
     joined[data.side] = true;
     console.log(data.side + ' joined');
 }
+
 function leavePlayer(data) {
     joined[data.side] = false;
     console.log(data.side + ' left');
