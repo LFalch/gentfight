@@ -18,7 +18,7 @@ let qrDiv;
 let raft;
 let img_ready;
 let img_unready;
-const movesToRingOut = 5;
+const movesToRingOut = 8;
 let playersDisplacement = 0;
 
 let motionDatas = {};
@@ -94,9 +94,9 @@ function draw() {
     rect(20, 20, 10*30, 40);    //Background for left player health bar
 
     //Right player health bar
-    let hBarRight = map(pRight.lives,10,0,255,10);
+    let hBarRight = map(pRight.lives,20,0,255,10);
     fill(255-hBarRight,hBarRight,0);
-    rect(width-20-pRight.lives*30, 20, pRight.lives*30, 40);
+    rect(width-20-pRight.lives*15, 20, pRight.lives*15, 40);
 
     if (motionDatas.right) {
         stroke(0);
@@ -126,9 +126,9 @@ function draw() {
     }
     
     //Left player health bar
-    let hBarLeft = map(pLeft.lives,10,0,255,10);
+    let hBarLeft = map(pLeft.lives,20,0,255,10);
     fill(255-hBarLeft, hBarLeft, 0);
-    rect(20, 20, pLeft.lives*30, 40);
+    rect(20, 20, pLeft.lives*15, 40);
     
     if (motionDatas.left) {
         stroke(0);
