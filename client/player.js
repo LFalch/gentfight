@@ -47,7 +47,7 @@ function AnimationSpritesheet(img, columns, rows, step) {
 let dispUnit;
 function displacementUnit() {
     if (!dispUnit) {
-        dispUnit = raft.width / 10;
+        dispUnit = raft.width / (movesToRingOut * 2 + 2);
     }
     return dispUnit || 10;
 }
@@ -65,9 +65,11 @@ function Player(side, name){
         this.x = 352 - 36;
         this.show = () => {
             tint('red');
-            let x_override = this.x + playersDisplacement * displacementUnit();
+            let x_override;
             if (this.state == 'dead'){
-                x_override -= 96;
+                x_override = this.x - 96;
+            } else {
+                x_override = this.x + playersDisplacement * displacementUnit();
             }
             this.anim.draw(x_override, this.y);
         };
@@ -76,9 +78,11 @@ function Player(side, name){
         this.show = () => {
             tint('blue');
             imageFlip();
-            let x_override = this.x + playersDisplacement * displacementUnit();
+            let x_override;
             if (this.state == 'dead'){
-                x_override += 96;
+                x_override = this.x + 96;
+            } else {
+                x_override = this.x + playersDisplacement * displacementUnit();
             }
             this.anim.draw(x_override, this.y);
             imageFlip();
