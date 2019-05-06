@@ -30,7 +30,7 @@ function AnimationSpritesheet(img, columns, animationTime) {
         this.tileHeight = this.img.height;
         this.onAnimOver = () => {};
     };
-    this.resetImg(img, columns, rows, animationTime);
+    this.resetImg(img, columns, animationTime);
     this.draw = (x, y, w, h) => {
         let i = Math.floor(this.i++ / this.step);
         image(this.img, x, y, w || this.tileWidth, h || this.tileHeight, i*this.tileWidth, this.j*this.tileHeight, this.tileWidth, this.tileHeight);
