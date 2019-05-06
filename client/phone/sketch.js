@@ -1,12 +1,7 @@
 let side;
 let socket = null;
-let buttonStartY = window.innerHeight/2;
 let canvasWidth = window.innerWidth-window.innerWidth*1/20;
 let canvasHeight = window.innerHeight-window.innerHeight*1/20;
-
-let sidesData = [];
-let downData = [];
-const maxDataLength = 250;
 
 function socketInit() {
     delete socketInit;
@@ -61,28 +56,10 @@ function preload() {
 
 function setup() {
     createCanvas(canvasWidth, canvasHeight);
-    punchButtonX = 0;
-    blockButtonX = canvasWidth/2;
-    buttonWidth = canvasWidth/2;
-    buttonHeight = canvasHeight-buttonStartY;
 }
 
 function draw() {
     background('grey');
-    //Punch button
-    fill('red');
-    rect(punchButtonX,buttonStartY,buttonWidth,buttonHeight); 
-    //Block Button
-    fill('green');
-    rect(blockButtonX,buttonStartY,buttonWidth,buttonHeight);
-    fill('black');
-    textSize(32);
-    text('Punch',punchButtonX+200,buttonStartY+canvasHeight/4);
-    text('Block',blockButtonX+200,buttonStartY+canvasHeight/4);
-    fill('white');
-    
-    rect(0,canvasHeight/6,canvasWidth/2,canvasHeight/3);                //box for sideData
-    rect(0+canvasWidth/2,canvasHeight/6,canvasWidth/2,canvasHeight/3);    //box for downData
 
     if (unsupporteds.length > 0) {
         textSize(12);
@@ -98,37 +75,8 @@ function draw() {
         const downDir = accelerationWithGrav.sub(acceleration).normalise();
         const downMotion = acceleration.dot(downDir ? downDir : new Vector(0, 0, 0));
         const sidewaysMotion = Math.sqrt(acceleration.lengthSq() - downMotion*downMotion);
-
+        
         if (downMotion && sidewaysMotion) {
-            text('down: ' + Math.round(downMotion*10)/10, 10, 55);
-            text('side: ' + Math.round(sidewaysMotion*10)/10, 10, 80);
-
-            text('sidesdata: ' + sidesData.length, 20, 100);
-            text('downData: ' + downData.length, 20, 200);
-            sidesData.push(sidewaysMotion);
-            downData.push(downMotion);
-            while (sidesData.length > maxDataLength) {
-                sidesData.shift();
-            }
-            while (downData.length > maxDataLength) {
-                downData.shift();
-            }
-            for (let i = 0; i < sidesData.length-1; i++){
-                const graph0_y = map(0, -5, 5, canvasHeight / 3, canvasHeight / 6);
-                line(0,graph0_y,canvasWidth,graph0_y);
-                const sidesX_1 = map(i, 0, sidesData.length, canvasWidth / 2, 0);
-                const sidesX_2 = map(i + 1, 0, sidesData.length, canvasWidth / 2, 0);
-                const sidesY_1 = map(sidesData[i], -5, 5, canvasHeight / 3, canvasHeight / 6);
-                const sidesY_2 = map(sidesData[i + 1], -5, 5, canvasHeight / 3, canvasHeight / 6);
-                line(sidesX_1,sidesY_1,sidesX_2,sidesY_2);
-
-                const downX_1 = map(i, 0, downData.length, canvasWidth, canvasWidth/2);
-                const downX_2 = map(i + 1, 0, downData.length, canvasWidth, canvasWidth / 2);
-                const downY_1 = map(downData[i], -5, 5, canvasHeight / 3, canvasHeight / 6);
-                const downY_2 = map(downData[i + 1], -5, 5, canvasHeight / 3, canvasHeight / 6);
-                line(downX_1,downY_1,downX_2,downY_2);
-            }
-
             const packet = {
                 downMotion,
                 sidewaysMotion
@@ -142,27 +90,4 @@ function mouseReleased() {
     if (!socket){
         socketInit();
     }
-    if (                            //punch button
-        mouseX > punchButtonX &&
-        mouseX < punchButtonX+buttonWidth &&
-        mouseY > buttonStartY &&
-        mouseY < buttonStartY+buttonHeight
-      ) {
-        const data = {
-            side: side,
-            action: 'punch',
-        }
-        socket.emit('action', data);
-      } else if (                            //Block button
-        mouseX > blockButtonX &&
-        mouseX < blockButtonX+buttonWidth &&
-        mouseY > buttonStartY &&
-        mouseY < buttonStartY+buttonHeight
-      ) {
-        const data = {
-            side: side,
-            action: 'block',
-        }
-        socket.emit('action', data);
-      }
 }
