@@ -9,7 +9,7 @@ let joined = {
 
 //det her er en variable som vi bruger om lidt
 let qrcode; 
-let div;
+let qrDiv;
 
 let raft;
 
@@ -20,8 +20,6 @@ function preload() {
 }
 
 function setup() {
-    pLeft = new Player('left');
-    pRight = new Player('right');
     socket = io.connect(window.location.origin);
     createCanvas(800, 450);
     socket.on('welcome', function({addr, joinedSides}) {
@@ -31,7 +29,7 @@ function setup() {
             }
         }
         server_address = addr;
-
+        
         const url = `https://${server_address}:3000/phone/`;
 
         qrcode.makeCode(url);
@@ -41,17 +39,20 @@ function setup() {
     socket.on('motionData', ({side, sides, downs}) => {
         motionDatas[side] = {sides, downs};
     });
-
-    div = createDiv("");
-    div.id("qrcode");
-
-    div.style("width", "256px");
-    div.style("height", "256px");
-    div.style("padding", "2px");
-    div.position(300,160);
-
-
+    
+    qrDiv = createDiv("");
+    qrDiv.id("qrcode");
+    
+    qrDiv.style("width", "256px");
+    qrDiv.style("height", "256px");
+    qrDiv.style("padding", "2px");
+    qrDiv.position(300,160);
+    
+    
     qrcode = new QRCode("qrcode");
+
+    pLeft = new Player('left');
+    pRight = new Player('right');
 }
 
 function draw() {
@@ -141,7 +142,7 @@ function draw() {
         fill('black');
         text('Waiting for all players on ' + server_address, 150, 125);
     } else {
-        div.remove();
+        qrDiv.remove();
     }
 }
 

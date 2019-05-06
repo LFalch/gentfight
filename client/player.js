@@ -56,10 +56,9 @@ function Player(side, name){
     this.resetState = () => {
         this.state = 'idle';
         this.anim.resetImg(this.img_idle, 1, 1, 30);
-        console.log('reset');
     }
     if (side == 'left') {
-        this.x = 304+40;
+        this.x = 352 - 36;
         this.show = () => {
             tint('red');
             let x_offset = 0;
@@ -69,7 +68,7 @@ function Player(side, name){
             this.anim.draw(this.x+x_offset, this.y);
         };
     } else {
-        this.x = 400;
+        this.x = 352 + 36;
         this.show = () => {
             tint('blue');
             imageFlip();
