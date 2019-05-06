@@ -3,6 +3,13 @@ let socket = null;
 let canvasWidth = window.innerWidth-window.innerWidth*1/20;
 let canvasHeight = window.innerHeight-window.innerHeight*1/20;
 
+let buttonWidth = 500;
+let buttonHeight = 400;
+let buttonX;
+let buttonY;
+
+let isReady = false;
+
 function socketInit() {
     delete socketInit;
     socket = io.connect(window.location.origin);
@@ -56,16 +63,28 @@ function preload() {
 
 function setup() {
     createCanvas(canvasWidth, canvasHeight);
+    buttonX = canvasWidth/2-buttonWidth/2;
+    buttonY = canvasHeight/5;
 }
 
 function draw() {
     background('grey');
+    if (!isReady){
+        fill("red");
+    } else if (isReady) {
+        fill("green");
+    }
+    rect(buttonX, buttonY, buttonWidth, buttonHeight);
+    
+    fill("black");
+    text("Ready Up", buttonX+buttonWidth/2-40, buttonY+buttonHeight/2);
+    
 
     if (unsupporteds.length > 0) {
         textSize(12);
         text('Unsupported features: ' + unsupporteds, 2, 14);
     }
-    
+
     textSize(25);
     if (!socket) {
         text('Click to join', canvasWidth/2-50, 100); 
@@ -90,4 +109,14 @@ function mouseReleased() {
     if (!socket){
         socketInit();
     }
+    //ready button
+    if (                            
+        mouseX > buttonX &&
+        mouseX < buttonX+buttonWidth &&
+        mouseY > buttonY &&
+        mouseY < buttonY+buttonHeight
+      ) {
+          isReady = true;
+        socket.emit('ready', {side});
+      }
 }

@@ -6,18 +6,26 @@ let joined = {
     left: false,
     right: false,
 }
+let ready = {
+    left: false,
+    right: false,
+}
 
 //det her er en variable som vi bruger om lidt
 let qrcode; 
 let qrDiv;
 
 let raft;
+let img_ready;
+let img_unready;
 let playersDisplacement = 0;
 
 let motionDatas = {};
 
 function preload() {
     raft = loadImage('assets/scenery/raft1.png');
+    img_ready = loadImage('assets/UI/ready.png');
+    img_unready = loadImage('assets/UI/unready.png');
 }
 
 function setup() {
@@ -35,6 +43,7 @@ function setup() {
 
         qrcode.makeCode(url);
     })
+    socket.on('ready', readyPlayer);
     socket.on('join', joinPlayer);
     socket.on('action', playerAction);
     socket.on('motionData', ({side, sides, downs}) => {
@@ -59,6 +68,22 @@ function setup() {
 function draw() {
     background(0, 119, 190);
     fill("black");
+    textSize(30);
+    if (!(joined.left && joined.right)) {
+        text('Waiting for all players to join on ' + server_address, 150, 125);
+        return;
+    } else {
+        qrDiv.remove();
+        if (!(ready.left && ready.right)) {
+            text("left",pLeft.x, 325);
+            image(ready.left?img_ready:img_unready, pLeft.x, 225);
+            text("right",pRight.x, 325);
+            image(ready.right?img_ready:img_unready, pRight.x, 225);
+            text('Waiting for all players ready up', 150, 125);
+            return;
+        }
+    }
+
     textSize(16);
     text("life: " + pLeft.lives, pLeft.x, pLeft.y-20);
     text("life: " + pRight.lives, pRight.x, pRight.y-20);
@@ -137,14 +162,11 @@ function draw() {
     pLeft.show();
     pRight.show();
     noTint();
-    
-    if (!(joined.left && joined.right)) {
-        textSize(30);
-        fill('black');
-        text('Waiting for all players on ' + server_address, 150, 125);
-    } else {
-        qrDiv.remove();
-    }
+}
+
+function readyPlayer(data) {
+    ready[data.side] = true;
+    console.log(data.side + 'is ready');
 }
 
 function joinPlayer(data) {
