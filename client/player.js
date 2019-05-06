@@ -18,20 +18,19 @@ function imageFlip() {
     imagesFlipped = !imagesFlipped;
 }
 
-function AnimationSpritesheet(img, columns, rows, step) {
-    this.resetImg = (img, columns, rows, step) => {
+function AnimationSpritesheet(img, columns, animationTime) {
+    this.resetImg = (img, columns, animationTime) => {
         this.img = img;
         this.i = 0;
         this.j = 0;
-        this.step = step || 15;
+        this.step = animationTime / columns || 15;
         this.columns = columns || 1;
-        this.rows = rows || 1;
 
         this.tileWidth = this.img.width / this.columns;
-        this.tileHeight = this.img.height / this.rows;
+        this.tileHeight = this.img.height;
         this.onAnimOver = () => {};
     };
-    this.resetImg(img, columns, rows, step);
+    this.resetImg(img, columns, rows, animationTime);
     this.draw = (x, y, w, h) => {
         let i = Math.floor(this.i++ / this.step);
         image(this.img, x, y, w || this.tileWidth, h || this.tileHeight, i*this.tileWidth, this.j*this.tileHeight, this.tileWidth, this.tileHeight);
@@ -59,7 +58,7 @@ function Player(side, name){
     this.lives = 20;
     this.resetState = () => {
         this.state = 'idle';
-        this.anim.resetImg(this.img_idle, 1, 1, 30);
+        this.anim.resetImg(this.img_idle, 1, 30);
     }
     if (side == 'left') {
         this.x = 352 - 36;
@@ -97,7 +96,7 @@ function Player(side, name){
             if (this.state != 'idle') {
                 return
             }
-            this.anim.resetImg(this.img_punching, 4, 1, 8);
+            this.anim.resetImg(this.img_punching, 4, 32);
             this.anim.onAnimationOver(() => {
                 this.resetState();
                 doPunch(this.side);
@@ -107,13 +106,13 @@ function Player(side, name){
             if (this.state == 'blocking') {
                 return
             }
-            this.anim.resetImg(this.img_damaged, 3, 1, 10);
+            this.anim.resetImg(this.img_damaged, 3, 30);
             this.anim.onAnimationOver(() => {
                 this.resetState();
             });
             break;
             case 'stunned':
-            this.anim.resetImg(this.img_stunned, 3, 1, 15);
+            this.anim.resetImg(this.img_stunned, 3, 45);
             this.anim.onAnimationOver(() => {
                 this.resetState();
             });
@@ -122,13 +121,13 @@ function Player(side, name){
             if (this.state != 'idle') {
                 return
             }
-            this.anim.resetImg(this.img_blocking, 3, 1, 15);
+            this.anim.resetImg(this.img_blocking, 3, 45);
             this.anim.onAnimationOver(this.resetState);
             break;
             case 'dead':
-            this.anim.resetImg(this.img_dying, 3, 1, 20);
+            this.anim.resetImg(this.img_dying, 3, 60);
             this.anim.onAnimationOver(() => {
-                this.anim.resetImg(this.img_dead, 1, 1, 100);
+                this.anim.resetImg(this.img_dead, 1, 100);
             });
             break;
         }
