@@ -56,7 +56,7 @@ function Player(side, name){
     this.side = side;
     this.state = 'idle';
     this.y = 100;
-    this.lives = 10;
+    this.lives = 20;
     this.resetState = () => {
         this.state = 'idle';
         this.anim.resetImg(this.img_idle, 1, 1, 30);
@@ -97,7 +97,7 @@ function Player(side, name){
             if (this.state != 'idle') {
                 return
             }
-            this.anim.resetImg(this.img_punching, 4, 1, 6);
+            this.anim.resetImg(this.img_punching, 4, 1, 8);
             this.anim.onAnimationOver(() => {
                 this.resetState();
                 doPunch(this.side);
@@ -107,13 +107,13 @@ function Player(side, name){
             if (this.state == 'blocking') {
                 return
             }
-            this.anim.resetImg(this.img_damaged, 3, 1, 15);
+            this.anim.resetImg(this.img_damaged, 3, 1, 10);
             this.anim.onAnimationOver(() => {
                 this.resetState();
             });
             break;
             case 'stunned':
-            this.anim.resetImg(this.img_stunned, 3, 1, 20);
+            this.anim.resetImg(this.img_stunned, 3, 1, 15);
             this.anim.onAnimationOver(() => {
                 this.resetState();
             });

@@ -86,6 +86,9 @@ io.sockets.on('connection',
     };
     playerSockets[side] = socket;
 
+    socket.on('ready', function() {
+      serverSocket.emit('ready', {side});
+    });
     socket.on('record', function() {
       isRecording = true;
       wekControl('startRecording');
