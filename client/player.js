@@ -26,9 +26,6 @@ function AnimationSpritesheet(img, columns, rows, step) {
         this.step = step || 15;
         this.columns = columns || 1;
         this.rows = rows || 1;
-        if (this.rows == 3) {
-            console.log('Hello');
-        } 
 
         this.tileWidth = this.img.width / this.columns;
         this.tileHeight = this.img.height / this.rows;
@@ -47,6 +44,13 @@ function AnimationSpritesheet(img, columns, rows, step) {
         this.onAnimOver = callback;
     }
 }
+let dispUnit;
+function displacementUnit() {
+    if (!dispUnit) {
+        dispUnit = raft.width / 10;
+    }
+    return dispUnit || 10;
+}
 
 function Player(side, name){
     this.side = side;
@@ -61,22 +65,22 @@ function Player(side, name){
         this.x = 352 - 36;
         this.show = () => {
             tint('red');
-            let x_offset = 0;
+            let x_override = this.x + playersDisplacement * displacementUnit();
             if (this.state == 'dead'){
-                x_offset = -96;
+                x_override -= 96;
             }
-            this.anim.draw(this.x+x_offset, this.y);
+            this.anim.draw(x_override, this.y);
         };
     } else {
         this.x = 352 + 36;
         this.show = () => {
             tint('blue');
             imageFlip();
-            let x_offset = 0;
+            let x_override = this.x + playersDisplacement * displacementUnit();
             if (this.state == 'dead'){
-                x_offset = 96;
+                x_override += 96;
             }
-            this.anim.draw(this.x+x_offset, this.y);
+            this.anim.draw(x_override, this.y);
             imageFlip();
         };
     }

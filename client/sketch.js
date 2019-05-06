@@ -12,6 +12,7 @@ let qrcode;
 let qrDiv;
 
 let raft;
+let playersDisplacement = 0;
 
 let motionDatas = {};
 
@@ -181,18 +182,23 @@ function playerAction(data){
 function doPunch(side) {
     let otherPlayer;
     let player;
+    let dispDelta;
     if (side == 'left'){
         player = pLeft;
         otherPlayer = pRight;
+        dispDelta = 1;
     } else {
         player = pRight;
         otherPlayer = pLeft;
+        dispDelta = -1;
     }
     if (otherPlayer.state == 'blocking'){
+        playersDisplacement += 2*dispDelta;
         player.changeState('stunned');
     }
     if (otherPlayer.state != 'blocking'){
         otherPlayer.lives -= 1;
+        playersDisplacement += dispDelta;
         if (otherPlayer.lives <= 0) {
             otherPlayer.changeState('dead');
         } else {
