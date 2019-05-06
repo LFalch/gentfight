@@ -96,7 +96,7 @@ function Player(side, name){
             if (this.state != 'idle') {
                 return
             }
-            this.anim.resetImg(this.img_punching, 4, 32);
+            this.anim.resetImg(this.img_punching, 4, 36);
             this.anim.onAnimationOver(() => {
                 this.resetState();
                 doPunch(this.side);
@@ -121,7 +121,7 @@ function Player(side, name){
             if (this.state != 'idle') {
                 return
             }
-            this.anim.resetImg(this.img_blocking, 3, 45);
+            this.anim.resetImg(this.img_blocking, 3, 39);
             this.anim.onAnimationOver(this.resetState);
             break;
             case 'dead':
