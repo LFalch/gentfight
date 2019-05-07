@@ -68,7 +68,13 @@ function setup() {
 }
 
 function draw() {
+    if (!side) {
     background('grey');
+    } else if (side == "right") {
+        background('blue');
+    } else if (side == "left"){
+        background('red');
+    }
     if (!isReady){
         fill("red");
     } else if (isReady) {
