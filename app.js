@@ -125,6 +125,15 @@ io.sockets.on('connection',
                 case 2:
                 serverSocket.emit('action', {side, action: 'block'});
                 break;
+                case 3:
+                // Nothing
+                break;
+                case 4:
+                serverSocket.emit('action', {side, action: 'low_punch'});
+                break;
+                case 5:
+                serverSocket.emit('action', {side, action: 'low_block'});
+                break;
               } 
             });
             while (outputCbs.length > 2) {
