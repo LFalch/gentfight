@@ -233,43 +233,42 @@ function doPunch(side, stance) {
     if (otherPlayer.state == 'dead') {
         return;
     }
-    if (stance == 'standing') {
-        if (otherPlayer.state == 'blocking'){
+    if (stance == 'high') {
+        switch (otherPlayer.state) {
+            case 'blocking':
+                playersDisplacement -= 2*dispDelta;
+                player.changeState('stunned');
+                break;
+            case 'low_blocking':
+                otherPlayer.changeState('stunned');
+                otherPlayer.lives -= 1;
+                break;
+            case 'low_punching':
+                // You hit above
+                break;
+            default:
+                if (otherPlayer.state != 'blocking') {
+                    otherPlayer.lives -= 1;
+                    playersDisplacement += dispDelta;
+                    otherPlayer.changeState('damaged');
+                }
+                break;
+        }
+    } else if (stance == 'low') {
+        switch (otherPlayer.state) {
+            case 'blocking':
             playersDisplacement += 2*dispDelta;
-            player.changeState('stunned');
-        }
-        if (otherPlayer.state == 'low_blocking' ){
-            
-        }
-        if (otherPlayer.state != 'blocking'){
-            otherPlayer.lives -= 1;
-            playersDisplacement += dispDelta;
-            if (otherPlayer.lives <= 0) {
-                otherPlayer.changeState('dead');
-                setTimeout(resetPlayers, 5000);
-            } else {
-                otherPlayer.changeState('damaged');
-            }
-        }
-    }
-    if (stance == 'sitting') {
-        if (otherPlayer.state == 'low_blocking'){
-            playersDisplacement += 2*dispDelta;
+            break;
+            case 'low_blocking':
             player.changeState('low_stunned');
-        }
-        if (otherPlayer.state != 'low_blocking'){
-            otherPlayer.lives -= 1;
-            playersDisplacement += dispDelta;
-            if (otherPlayer.lives <= 0) {
-                otherPlayer.changeState('dead');
-                setTimeout(resetPlayers, 5000);
-            } else {
-                otherPlayer.changeState('damaged');
-            }
+            break;
+            default:
+            otherPlayer.lives -= 2;
+            break;
         }
     }
 
-    if (Math.abs(playersDisplacement) >= movesToRingOut) {
+    if (Math.abs(playersDisplacement) >= movesToRingOut || otherPlayer.lives <= 0) {
         setTimeout(resetPlayers, 5000);
         otherPlayer.changeState('dead');
     }

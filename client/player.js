@@ -99,7 +99,7 @@ function Player(side, name){
             this.anim.resetImg(this.img_punching, 4, 36);
             this.anim.onAnimationOver(() => {
                 this.resetState();
-                doPunch(this.side, "standing");
+                doPunch(this.side, 'high');
             });
             break;
             case 'stunned':
@@ -123,7 +123,7 @@ function Player(side, name){
             this.anim.resetImg(this.img_low_punching, 4, 36);
             this.anim.onAnimationOver(() => {
                 this.resetState();
-                doPunch(this.side, "sitting");
+                doPunch(this.side, 'low');
             });
             break;
             case 'low_stunned':
