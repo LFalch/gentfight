@@ -136,9 +136,12 @@ function Player(side, name){
         this.state = state;
     }
     this.name = name;
-    this.img_blocking = loadImage('assets/character_template/block_temp.png');
-    this.img_punching = loadImage('assets/character_template/punch_temp.png');
+    this.img_blocking = loadImage('assets/character_template/block.png');
+    this.img_punching = loadImage('assets/character_template/punch.png');
     this.img_stunned = loadImage('assets/character_template/stunned.png');
+    this.img_low_punch = loadImage('assets/character_template/low_punch.png');
+    this.img_low_block = loadImage('assets/character_template/low_block.png');
+    this.img_low_stunned = loadImage('assets/character_template/low_stunned.png');
     this.img_damaged = loadImage('assets/character_template/damage.png');
     this.img_dying = loadImage('assets/character_template/death.png');
     this.img_dead = loadImage('assets/character_template/dead.png');
