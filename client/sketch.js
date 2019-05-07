@@ -173,6 +173,15 @@ function readyPlayer(data) {
 function joinPlayer(data) {
     joined[data.side] = true;
     console.log(data.side + ' joined');
+
+    if (pLeft.state == 'dead' || pRight.state == 'dead') {
+        // HACK make proper restart prompt
+        pLeft.state = 'idle';
+        pRight.state = 'idle';
+        playersDisplacement = 0;
+        pLeft.lives = 20;
+        pRight.lives = 20;
+    }
 }
 
 function leavePlayer(data) {
@@ -215,6 +224,11 @@ function doPunch(side) {
         otherPlayer = pLeft;
         dispDelta = -1;
     }
+
+    if (otherPlayer.state == 'dead') {
+        return;
+    }
+
     if (otherPlayer.state == 'blocking'){
         playersDisplacement += 2*dispDelta;
         player.changeState('stunned');
