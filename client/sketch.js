@@ -281,7 +281,7 @@ function keyPressed () {
     if (key == 'R' && wekinatorRecordEnabled) {
         socket.emit('record', {});
     }
-    if (key == 'W' || key == 'w') {
+    if (key == 'p' || key == 'P') {
         wekinatorRecordEnabled = !wekinatorRecordEnabled;
         console.log('Wekinator enabled: ', wekinatorRecordEnabled);
     }
