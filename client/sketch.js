@@ -51,16 +51,16 @@ function setup() {
         motionDatas[side] = {sides, downs};
     });
     
-    qrDiv = createDiv("");
-    qrDiv.id("qrcode");
+    qrDiv = createDiv('');
+    qrDiv.id('qrcode');
     
-    qrDiv.style("width", "256px");
-    qrDiv.style("height", "256px");
-    qrDiv.style("padding", "2px");
+    qrDiv.style('width', '256px');
+    qrDiv.style('height', '256px');
+    qrDiv.style('padding', '2px');
     qrDiv.position(300,160);
     
     
-    qrcode = new QRCode("qrcode");
+    qrcode = new QRCode('qrcode');
 
     pLeft = new Player('left');
     pRight = new Player('right');
@@ -77,7 +77,7 @@ function resetPlayers() {
 
 function draw() {
     background(0, 119, 190);
-    fill("black");
+    fill('black');
     textSize(30);
     if (!(joined.left && joined.right)) {
         text('Waiting for all players to join on ' + server_address, 150, 125);
@@ -207,11 +207,17 @@ function playerAction(data){
         case "block":
             player.changeState('blocking');
         break;
+        case "low_punch":
+        player.changeState('low_punching');
+        break;
+        case "low_block":
+            player.changeState('low_blocking');
+        break;
     }
 }
 
 /// Decreases life of other player if punch succeeds.
-function doPunch(side) {
+function doPunch(side, stance) {
     let otherPlayer;
     let player;
     let dispDelta;
@@ -224,23 +230,42 @@ function doPunch(side) {
         otherPlayer = pLeft;
         dispDelta = -1;
     }
-
     if (otherPlayer.state == 'dead') {
         return;
     }
-
-    if (otherPlayer.state == 'blocking'){
-        playersDisplacement += 2*dispDelta;
-        player.changeState('stunned');
+    if (stance == 'standing') {
+        if (otherPlayer.state == 'blocking'){
+            playersDisplacement += 2*dispDelta;
+            player.changeState('stunned');
+        }
+        if (otherPlayer.state == 'low_blocking' ){
+            
+        }
+        if (otherPlayer.state != 'blocking'){
+            otherPlayer.lives -= 1;
+            playersDisplacement += dispDelta;
+            if (otherPlayer.lives <= 0) {
+                otherPlayer.changeState('dead');
+                setTimeout(resetPlayers, 5000);
+            } else {
+                otherPlayer.changeState('damaged');
+            }
+        }
     }
-    if (otherPlayer.state != 'blocking'){
-        otherPlayer.lives -= 1;
-        playersDisplacement += dispDelta;
-        if (otherPlayer.lives <= 0) {
-            otherPlayer.changeState('dead');
-            setTimeout(resetPlayers, 5000);
-        } else {
-            otherPlayer.changeState('damaged');
+    if (stance == 'sitting') {
+        if (otherPlayer.state == 'low_blocking'){
+            playersDisplacement += 2*dispDelta;
+            player.changeState('low_stunned');
+        }
+        if (otherPlayer.state != 'low_blocking'){
+            otherPlayer.lives -= 1;
+            playersDisplacement += dispDelta;
+            if (otherPlayer.lives <= 0) {
+                otherPlayer.changeState('dead');
+                setTimeout(resetPlayers, 5000);
+            } else {
+                otherPlayer.changeState('damaged');
+            }
         }
     }
 
@@ -253,5 +278,17 @@ function doPunch(side) {
 function keyPressed () {
     if (key == 'R') {
         socket.emit('record', {});
+    }
+    if (key == 'down_arrow') {
+
+    }
+    if (key == 'up_arrow') {
+
+    }
+    if (key == 'left_arrow') {
+
+    }
+    if (key == 'right_arrow') {
+
     }
 }
