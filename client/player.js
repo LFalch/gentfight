@@ -125,10 +125,12 @@ function Player(side, name){
             this.anim.onAnimationOver(this.resetState);
             break;
             case 'dead':
-            this.anim.resetImg(this.img_dying, 3, 60);
-            this.anim.onAnimationOver(() => {
-                this.anim.resetImg(this.img_dead, 1, 100);
-            });
+            if (this.state != 'dead') {
+                this.anim.resetImg(this.img_dying, 3, 60);
+                this.anim.onAnimationOver(() => {
+                    this.anim.resetImg(this.img_dead, 1, 100);
+                });
+            }
             break;
         }
         this.state = state;
