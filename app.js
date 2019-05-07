@@ -63,8 +63,9 @@ io.sockets.on('connection',
         isRecording = true;
       });
       serverSocket.on('unready', () => {
-        playerSockets.left.emit("unready", {});
-        playerSockets.right.emit("unready", {});
+        for (k of Object.keys(serverSocket)) {
+          playerSockets[k].emit("unready", {});
+        }
       });
       socket.on('disconnect', function() {
         serverSocket = null;
