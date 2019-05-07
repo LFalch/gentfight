@@ -250,8 +250,14 @@ function doPunch(side) {
     }
 }
 
+let wekinatorRecordEnabled = false;
+
 function keyPressed () {
-    if (key == 'R') {
+    if (key == 'R' && wekinatorRecordEnabled) {
         socket.emit('record', {});
+    }
+    if (key == 'W' || key == 'w') {
+        wekinatorRecordEnabled = !wekinatorRecordEnabled;
+        console.log('Wekinator enabled: ', wekinatorRecordEnabled);
     }
 }
