@@ -102,10 +102,29 @@ function Player(side, name){
                 doPunch(this.side);
             });
             break;
-            case 'damaged':
-            if (this.state == 'blocking') {
+            case 'low_punching':
+            if (this.state != 'idle') {
                 return
             }
+            this.anim.resetImg(this.img_low_punching, 4, 36);
+            this.anim.onAnimationOver(() => {
+                this.resetState();
+                doLowPunch(this.side);
+            });
+            break;
+            case 'low_blocking':
+            if (this.state != 'idle') {
+                return
+            }
+            this.anim.resetImg(this.img_low_blocking, 3, 39);
+            this.anim.onAnimationOver(this.resetState);
+            break;
+            case 'low_stunned':
+            this.anim.resetImg(this.img_low_stunned, 3, 45);
+            this.anim.onAnimationOver(() => {
+                this.resetState();
+            });
+            break;
             this.anim.resetImg(this.img_damaged, 3, 30);
             this.anim.onAnimationOver(() => {
                 this.resetState();
@@ -139,8 +158,8 @@ function Player(side, name){
     this.img_blocking = loadImage('assets/character_template/block.png');
     this.img_punching = loadImage('assets/character_template/punch.png');
     this.img_stunned = loadImage('assets/character_template/stunned.png');
-    this.img_low_punch = loadImage('assets/character_template/low_punch.png');
-    this.img_low_block = loadImage('assets/character_template/low_block.png');
+    this.img_low_punching = loadImage('assets/character_template/low_punch.png');
+    this.img_low_blocking = loadImage('assets/character_template/low_block.png');
     this.img_low_stunned = loadImage('assets/character_template/low_stunned.png');
     this.img_damaged = loadImage('assets/character_template/damage.png');
     this.img_dying = loadImage('assets/character_template/death.png');
@@ -150,7 +169,7 @@ function Player(side, name){
             console.log('still loading');
         }
     };
-    this.img_idle = loadImage('assets/character_template/idle_temp.png', (img) => {
+    this.img_idle = loadImage('assets/character_template/idle.png', (img) => {
         this.anim = new AnimationSpritesheet(img, 1, 1, 30);
     });
 }
