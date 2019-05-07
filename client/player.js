@@ -99,35 +99,7 @@ function Player(side, name){
             this.anim.resetImg(this.img_punching, 4, 36);
             this.anim.onAnimationOver(() => {
                 this.resetState();
-                doPunch(this.side);
-            });
-            break;
-            case 'low_punching':
-            if (this.state != 'idle') {
-                return
-            }
-            this.anim.resetImg(this.img_low_punching, 4, 36);
-            this.anim.onAnimationOver(() => {
-                this.resetState();
-                doLowPunch(this.side);
-            });
-            break;
-            case 'low_blocking':
-            if (this.state != 'idle') {
-                return
-            }
-            this.anim.resetImg(this.img_low_blocking, 3, 39);
-            this.anim.onAnimationOver(this.resetState);
-            break;
-            case 'low_stunned':
-            this.anim.resetImg(this.img_low_stunned, 3, 45);
-            this.anim.onAnimationOver(() => {
-                this.resetState();
-            });
-            break;
-            this.anim.resetImg(this.img_damaged, 3, 30);
-            this.anim.onAnimationOver(() => {
-                this.resetState();
+                doPunch(this.side, "standing");
             });
             break;
             case 'stunned':
@@ -142,6 +114,36 @@ function Player(side, name){
             }
             this.anim.resetImg(this.img_blocking, 3, 39);
             this.anim.onAnimationOver(this.resetState);
+            break;
+            
+            case 'low_punching':
+            if (this.state != 'idle') {
+                return
+            }
+            this.anim.resetImg(this.img_low_punching, 4, 36);
+            this.anim.onAnimationOver(() => {
+                this.resetState();
+                doPunch(this.side, "sitting");
+            });
+            break;
+            case 'low_stunned':
+            this.anim.resetImg(this.img_low_stunned, 3, 45);
+            this.anim.onAnimationOver(() => {
+                this.resetState();
+            });
+            break;
+            case 'low_blocking':
+            if (this.state != 'idle') {
+                return
+            }
+            this.anim.resetImg(this.img_low_blocking, 3, 39);
+            this.anim.onAnimationOver(this.resetState);
+            break;
+            case 'damaged':
+            this.anim.resetImg(this.img_damaged, 3, 30);
+            this.anim.onAnimationOver(() => {
+                this.resetState();
+            });
             break;
             case 'dead':
             if (this.state != 'dead') {
