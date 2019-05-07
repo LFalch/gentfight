@@ -13,6 +13,7 @@ let isReady = false;
 function socketInit() {
     delete socketInit;
     socket = io.connect(window.location.origin);
+    socket.on('unready', unready);
     socket.on('assign', function(data) {
         console.log('Got a side', data);
         side = data.side;
@@ -111,6 +112,10 @@ function draw() {
             socket.emit('motion', packet);
         }
     }
+}
+
+function unready(){
+    isReady = false;
 }
 
 function mouseReleased() {

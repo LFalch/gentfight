@@ -84,6 +84,12 @@ function draw() {
             return;
         }
     }
+    if (pLeft.state == "dead" || pRight.state == "dead"){
+        ready.left = false;
+        ready.right = false;
+        socket.emit('unready', {});
+    }
+
 
     textSize(16);
     text("life: " + pLeft.lives, pLeft.x, pLeft.y-20);
@@ -168,12 +174,7 @@ function draw() {
 function readyPlayer(data) {
     ready[data.side] = true;
     console.log(data.side + ' is ready');
-}
-
-function joinPlayer(data) {
-    joined[data.side] = true;
-    console.log(data.side + ' joined');
-
+    
     if (pLeft.state == 'dead' || pRight.state == 'dead') {
         // HACK make proper restart prompt
         pLeft.state = 'idle';
@@ -182,6 +183,11 @@ function joinPlayer(data) {
         pLeft.lives = 20;
         pRight.lives = 20;
     }
+}
+
+function joinPlayer(data) {
+    joined[data.side] = true;
+    console.log(data.side + ' joined');
 }
 
 function leavePlayer(data) {

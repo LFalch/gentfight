@@ -62,6 +62,10 @@ io.sockets.on('connection',
         wekControl('startRecording');
         isRecording = true;
       });
+      serverSocket.on('unready', () => {
+        playerSockets.left.emit("unready", {});
+        playerSockets.right.emit("unready", {});
+      });
       socket.on('disconnect', function() {
         serverSocket = null;
         console.log("Client has disconnected");
