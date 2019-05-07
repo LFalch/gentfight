@@ -96,14 +96,14 @@ function Player(side, name){
             if (this.state != 'idle') {
                 return
             }
-            this.anim.resetImg(this.img_punching, 4, 36);
+            this.anim.resetImg(this.img_punching, 4, 32);
             this.anim.onAnimationOver(() => {
                 this.resetState();
                 doPunch(this.side, 'high');
             });
             break;
             case 'stunned':
-            this.anim.resetImg(this.img_stunned, 3, 45);
+            this.anim.resetImg(this.img_stunned, 3, 48);
             this.anim.onAnimationOver(() => {
                 this.resetState();
             });
@@ -112,7 +112,7 @@ function Player(side, name){
             if (this.state != 'idle') {
                 return
             }
-            this.anim.resetImg(this.img_blocking, 3, 39);
+            this.anim.resetImg(this.img_blocking, 3, 27);
             this.anim.onAnimationOver(this.resetState);
             break;
             
@@ -120,14 +120,14 @@ function Player(side, name){
             if (this.state != 'idle') {
                 return
             }
-            this.anim.resetImg(this.img_low_punching, 4, 36);
+            this.anim.resetImg(this.img_low_punching, 4, 44);
             this.anim.onAnimationOver(() => {
                 this.resetState();
                 doPunch(this.side, 'low');
             });
             break;
             case 'low_stunned':
-            this.anim.resetImg(this.img_low_stunned, 3, 51);
+            this.anim.resetImg(this.img_low_stunned, 3, 60);
             this.anim.onAnimationOver(() => {
                 this.resetState();
             });
@@ -140,7 +140,7 @@ function Player(side, name){
             this.anim.onAnimationOver(this.resetState);
             break;
             case 'damaged':
-            this.anim.resetImg(this.img_damaged, 3, 30);
+            this.anim.resetImg(this.img_damaged, 3, 24);
             this.anim.onAnimationOver(() => {
                 this.resetState();
             });
