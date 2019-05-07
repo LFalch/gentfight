@@ -236,34 +236,35 @@ function doPunch(side, stance) {
     if (stance == 'high') {
         switch (otherPlayer.state) {
             case 'blocking':
-                playersDisplacement -= 2*dispDelta;
+                playersDisplacement -= dispDelta;
                 player.changeState('stunned');
                 break;
             case 'low_blocking':
-                otherPlayer.changeState('stunned');
+                otherPlayer.changeState('low_stunned');
                 otherPlayer.lives -= 1;
                 break;
             case 'low_punching':
                 // You hit above
                 break;
             default:
-                if (otherPlayer.state != 'blocking') {
-                    otherPlayer.lives -= 1;
-                    playersDisplacement += dispDelta;
-                    otherPlayer.changeState('damaged');
-                }
+                otherPlayer.lives -= 1;
+                playersDisplacement += 2*dispDelta;
+                otherPlayer.changeState('damaged');
                 break;
-        }
-    } else if (stance == 'low') {
-        switch (otherPlayer.state) {
+            }
+        } else if (stance == 'low') {
+            switch (otherPlayer.state) {
             case 'blocking':
-            playersDisplacement += 2*dispDelta;
-            break;
+                playersDisplacement += dispDelta;
+                otherPlayer.lives -= 2;
+                otherPlayer.changeState('damaged');
+                break;
             case 'low_blocking':
-            player.changeState('low_stunned');
-            break;
+                player.changeState('low_stunned');
+                break;
             default:
-            otherPlayer.lives -= 2;
+                otherPlayer.lives -= 2;
+                otherPlayer.changeState('damaged');
             break;
         }
     }

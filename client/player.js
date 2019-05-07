@@ -127,7 +127,7 @@ function Player(side, name){
             });
             break;
             case 'low_stunned':
-            this.anim.resetImg(this.img_low_stunned, 3, 45);
+            this.anim.resetImg(this.img_low_stunned, 3, 51);
             this.anim.onAnimationOver(() => {
                 this.resetState();
             });
