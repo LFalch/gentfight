@@ -285,4 +285,28 @@ function keyPressed () {
         wekinatorRecordEnabled = !wekinatorRecordEnabled;
         console.log('Wekinator enabled: ', wekinatorRecordEnabled);
     }
+    if (key == 'W') {
+        playerAction({side:'left',action:'block'});
+    }
+    if (key == 'D') {
+        playerAction({side:'left',action:'punch'});
+    }
+    if (key == 'S') {
+        playerAction({side:'left',action:'low_block'});
+    }
+    if (key == 'A') {
+        playerAction({side:'left',action:'low_punch'});
+    }
+    if (key == 'I') {
+        playerAction({side:'right',action:'block'});
+    }
+    if (key == 'J') {
+        playerAction({side:'right',action:'punch'});
+    }
+    if (key == 'K') {
+        playerAction({side:'right',action:'low_block'});
+    }
+    if (key == 'L') {
+        playerAction({side:'right',action:'low_punch'});
+    }
 }
