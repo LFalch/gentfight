@@ -208,7 +208,7 @@ function playerAction(data){
             player.changeState('blocking');
         break;
         case "low_punch":
-        player.changeState('low_punching');
+            player.changeState('low_punching');
         break;
         case "low_block":
             player.changeState('low_blocking');
