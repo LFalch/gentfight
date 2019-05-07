@@ -64,13 +64,14 @@ function preload() {
 
 function setup() {
     createCanvas(canvasWidth, canvasHeight);
+    frameRate(40);
     buttonX = canvasWidth/2-buttonWidth/2;
     buttonY = canvasHeight/5;
 }
 
 function draw() {
     if (!side) {
-    background('grey');
+        background('grey');
     } else if (side == "right") {
         background('blue');
     } else if (side == "left"){
@@ -87,9 +88,10 @@ function draw() {
     text("Ready Up", buttonX+buttonWidth/2-40, buttonY+buttonHeight/2);
     
 
+    text('Interval ' + interval + 'ms', 2, 14);
     if (unsupporteds.length > 0) {
         textSize(12);
-        text('Unsupported features: ' + unsupporteds, 2, 14);
+        text('Unsupported features: ' + unsupporteds, 120, 14);
     }
 
     textSize(25);

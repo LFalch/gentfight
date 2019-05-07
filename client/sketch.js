@@ -66,6 +66,15 @@ function setup() {
     pRight = new Player('right');
 }
 
+function resetPlayers() {
+    pLeft.changeState('idle');
+    pLeft.lives = 20;
+    pRight.changeState('idle');
+    pRight.lives = 20;
+    ready = {left: false, right: false};
+    playersDisplacement = 0;
+}
+
 function draw() {
     background(0, 119, 190);
     fill("black");
@@ -84,12 +93,6 @@ function draw() {
             return;
         }
     }
-    if (pLeft.state == "dead" || pRight.state == "dead"){
-        ready.left = false;
-        ready.right = false;
-        socket.emit('unready', {});
-    }
-
 
     textSize(16);
     text("life: " + pLeft.lives, pLeft.x, pLeft.y-20);
@@ -174,15 +177,6 @@ function draw() {
 function readyPlayer(data) {
     ready[data.side] = true;
     console.log(data.side + ' is ready');
-    
-    if (pLeft.state == 'dead' || pRight.state == 'dead') {
-        // HACK make proper restart prompt
-        pLeft.state = 'idle';
-        pRight.state = 'idle';
-        playersDisplacement = 0;
-        pLeft.lives = 20;
-        pRight.lives = 20;
-    }
 }
 
 function joinPlayer(data) {
@@ -244,12 +238,14 @@ function doPunch(side) {
         playersDisplacement += dispDelta;
         if (otherPlayer.lives <= 0) {
             otherPlayer.changeState('dead');
+            setTimeout(resetPlayers, 5000);
         } else {
             otherPlayer.changeState('damaged');
         }
     }
 
     if (Math.abs(playersDisplacement) >= movesToRingOut) {
+        setTimeout(resetPlayers, 5000);
         otherPlayer.changeState('dead');
     }
 }
