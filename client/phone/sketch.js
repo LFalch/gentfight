@@ -123,13 +123,14 @@ function mouseReleased() {
         socketInit();
     }
     //ready button
-    if (                            
+    if (
+        !isReady && 
         mouseX > buttonX &&
         mouseX < buttonX+buttonWidth &&
         mouseY > buttonY &&
         mouseY < buttonY+buttonHeight
-      ) {
-          isReady = true;
+    ) {
+        isReady = true;
         socket.emit('ready', {side});
-      }
+    }
 }
