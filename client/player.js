@@ -149,9 +149,6 @@ function Player(side, name){
             });
             break;
             case 'low_blocking':
-            if (this.state != 'idle') {
-                return
-            }
             this.anim.resetImg(this.img_low_blocking, 3, 39);
             this.anim.onAnimationOver(() => {
                 this.changeState('crouched');
