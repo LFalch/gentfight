@@ -116,7 +116,7 @@ function Player(side, name){
             this.anim.resetImg(this.img_crouched, 1, 100);
             break;
             case 'punching':
-            this.anim.resetImg(this.img_punching, 4, 32);
+            this.anim.resetImg(this.img_punching, 4, 36);
             this.anim.onAnimationOver(() => {
                 this.resetState();
                 doPunch(this.side, 'high');
@@ -135,21 +135,21 @@ function Player(side, name){
             break;
             
             case 'low_punching':
-            this.anim.resetImg(this.img_low_punching, 4, 44);
+            this.anim.resetImg(this.img_low_punching, 4, 40);
             this.anim.onAnimationOver(() => {
                 this.changeState('crouched');
                 doPunch(this.side, 'low');
             });
             break;
             case 'low_stunned':
-            this.anim.resetImg(this.img_low_stunned, 3, 60);
+            this.anim.resetImg(this.img_low_stunned, 3, 45);
             random(this.sounds_stunned).play();
             this.anim.onAnimationOver(() => {
                 this.changeState('crouched');
             });
             break;
             case 'low_blocking':
-            this.anim.resetImg(this.img_low_blocking, 3, 39);
+            this.anim.resetImg(this.img_low_blocking, 3, 30);
             this.anim.onAnimationOver(() => {
                 this.changeState('crouched');
             });
