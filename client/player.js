@@ -87,15 +87,31 @@ function Player(side, name){
             imageFlip();
         };
     }
+    this.action = (action) => {
+        let up = this.state == 'idle';
+        if (!up && this.state == 'crouched') {
+            switch (action) {
+                case 'punch':
+                this.changeState(up?'punching':'low_punching');
+                break;
+                case 'block':
+                this.changeState(up?'blocking':'low_blocking');
+                break;
+                case 'crouch':
+                this.changeState(up?'crouched':'idle');
+                break;
+            }
+        }
+    };
     this.changeState = (state) => {
         switch (state) {
             case 'idle':
             this.resetState();
             break;
+            case 'crouched':
+            this.anim.resetImg(this.img_crouched, 1, 100);
+            break;
             case 'punching':
-            if (this.state != 'idle') {
-                return
-            }
             this.anim.resetImg(this.img_punching, 4, 32);
             this.anim.onAnimationOver(() => {
                 this.resetState();
@@ -109,27 +125,21 @@ function Player(side, name){
             });
             break;
             case 'blocking':
-            if (this.state != 'idle') {
-                return
-            }
             this.anim.resetImg(this.img_blocking, 3, 27);
             this.anim.onAnimationOver(this.resetState);
             break;
             
             case 'low_punching':
-            if (this.state != 'idle') {
-                return
-            }
             this.anim.resetImg(this.img_low_punching, 4, 44);
             this.anim.onAnimationOver(() => {
-                this.resetState();
+                this.changeState('crouched');
                 doPunch(this.side, 'low');
             });
             break;
             case 'low_stunned':
             this.anim.resetImg(this.img_low_stunned, 3, 60);
             this.anim.onAnimationOver(() => {
-                this.resetState();
+                this.changeState('crouched');
             });
             break;
             case 'low_blocking':
@@ -137,7 +147,9 @@ function Player(side, name){
                 return
             }
             this.anim.resetImg(this.img_low_blocking, 3, 39);
-            this.anim.onAnimationOver(this.resetState);
+            this.anim.onAnimationOver(() => {
+                this.changeState('crouched');
+            });
             break;
             case 'damaged':
             this.anim.resetImg(this.img_damaged, 3, 24);
@@ -166,6 +178,7 @@ function Player(side, name){
     this.img_damaged = loadImage('assets/character_template/damage.png');
     this.img_dying = loadImage('assets/character_template/death.png');
     this.img_dead = loadImage('assets/character_template/dead.png');
+    this.img_crouched = loadImage('assets/character_template/crouched.png');
     this.anim = {
         draw: () => {
             console.log('still loading');

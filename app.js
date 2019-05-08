@@ -128,11 +128,8 @@ io.sockets.on('connection',
                 case 3:
                 // Nothing
                 break;
-                case 4:
-                serverSocket.emit('action', {side, action: 'low_punch'});
-                break;
-                case 5:
-                serverSocket.emit('action', {side, action: 'low_block'});
+                default:
+                console.log(`Received invalid class \`${wekClass}'`)
                 break;
               } 
             });
@@ -140,12 +137,6 @@ io.sockets.on('connection',
               outputCbs.shift();
             }
           }
-
-          // if (data.downMotion > 25) {
-          //   serverSocket.emit('action', {side, action: 'block'});
-          // } else if (data.sidewaysMotion > 25) {
-          //   serverSocket.emit('action', {side, action: 'punch'});
-          // }
         }
       }
     );

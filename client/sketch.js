@@ -200,20 +200,7 @@ function playerAction(data){
         player = pRight;
         otherPlayer = pLeft;
     }
-    switch (data.action) {
-        case "punch":
-            player.changeState('punching');
-        break;
-        case "block":
-            player.changeState('blocking');
-        break;
-        case "low_punch":
-            player.changeState('low_punching');
-        break;
-        case "low_block":
-            player.changeState('low_blocking');
-        break;
-    }
+    player.action(data.action);
 }
 
 /// Decreases life of other player if punch succeeds.
@@ -239,6 +226,7 @@ function doPunch(side, stance) {
                 playersDisplacement -= dispDelta;
                 player.changeState('stunned');
                 break;
+            case 'crouched':
             case 'low_blocking':
                 otherPlayer.changeState('low_stunned');
                 otherPlayer.lives -= 1;
