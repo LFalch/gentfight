@@ -88,8 +88,9 @@ function Player(side, name){
         };
     }
     this.action = (action) => {
-        let up = this.state == 'idle';
-        if (!up && this.state == 'crouched') {
+        console.log('I am do thing now ' + action);
+        const up = this.state == 'idle';
+        if (up || this.state == 'crouched') {
             switch (action) {
                 case 'punch':
                 this.changeState(up?'punching':'low_punching');
@@ -152,9 +153,13 @@ function Player(side, name){
             });
             break;
             case 'damaged':
+            let nextState = 'crouched';
+            if (this.state.startsWith('low_') || this.state == 'crouched') {
+                nextState = 'crouched;'
+            }
             this.anim.resetImg(this.img_damaged, 3, 24);
             this.anim.onAnimationOver(() => {
-                this.resetState();
+                this.changeState(nextState);
             });
             break;
             case 'dead':
