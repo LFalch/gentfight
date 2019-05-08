@@ -236,11 +236,12 @@ function doPunch(side, stance) {
                 break;
             case 'crouched':
             case 'low_blocking':
-                otherPlayer.changeState('low_stunned');
-                otherPlayer.lives -= 1;
+                otherPlayer.lives -= 2;
+                otherPlayer.changeState('low_damaged');
                 break;
             case 'low_punching':
-                // You hit above
+                otherPlayer.lives -= 1;
+                otherPlayer.changeState('low_stunned');
                 break;
             default:
                 otherPlayer.lives -= 1;
@@ -259,8 +260,9 @@ function doPunch(side, stance) {
                 player.changeState('low_stunned');
                 break;
             default:
-                otherPlayer.lives -= 2;
-                otherPlayer.changeState(otherPlayer.isLow() ? 'low_damaged' : 'damaged');
+                const low = otherPlayer.isLow();
+                otherPlayer.lives -= low ? 1 : 2;
+                otherPlayer.changeState(low ? 'low_damaged' : 'damaged');
             break;
         }
     }
