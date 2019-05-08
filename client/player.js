@@ -175,6 +175,15 @@ function Player(side, name){
     }
     this.name = name;
 
+    this.sounds_dmg = [];
+    for (let k = 1; k <= 5; k++){
+        this.sounds_dmg.push(loadSound('assets/sound/combat/damage'+ k +'.mp3'));
+    }
+    this.sounds_stunned = [];
+    for (let k = 1; k <= 4; k++){
+        this.sounds_stunned.push(loadSound('assets/sound/combat/stunned'+ k +'.mp3'));
+    }
+    
     this.img_blocking = loadImage('assets/character_template/block.png');
     this.img_punching = loadImage('assets/character_template/punch.png');
     this.img_stunned = loadImage('assets/character_template/stunned.png');
