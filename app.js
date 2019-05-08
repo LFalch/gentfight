@@ -63,13 +63,18 @@ io.sockets.on('connection',
         isRecording = true;
       });
       serverSocket.on('unready', () => {
-        for (k of Object.keys(serverSocket)) {
-          playerSockets[k].emit("unready", {});
+        for (k of Object.keys(playerSockets)) {
+          playerSockets[k].emit('unready', {});
+        }
+      });
+      serverSocket.on('gamestarted', () => {
+        for (k of Object.keys(playerSockets)) {
+          playerSockets[k].emit('gamestarted', {});
         }
       });
       socket.on('disconnect', function() {
         serverSocket = null;
-        console.log("Client has disconnected");
+        console.log('Client has disconnected');
       });
       return
     }
@@ -156,9 +161,9 @@ io.sockets.on('connection',
         console.log("Phone has disconnected");
       }
     );
-    socket.on('action', 
-      function (data) {
-        serverSocket.emit('action', data);
+    socket.on('crouch',
+      function() {
+        serverSocket.emit('action', {side,action:'crouch'})
       }
     );
   }

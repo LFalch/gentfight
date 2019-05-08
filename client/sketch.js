@@ -14,6 +14,7 @@ let ready = {
 //det her er en variable som vi bruger om lidt
 let qrcode; 
 let qrDiv;
+let gameRunning = false;
 
 let raft;
 let img_ready;
@@ -66,13 +67,15 @@ function setup() {
     pRight = new Player('right');
 }
 
-function resetPlayers() {
+function resetGameState() {
     pLeft.changeState('idle');
     pLeft.lives = 20;
     pRight.changeState('idle');
     pRight.lives = 20;
     ready = {left: false, right: false};
     playersDisplacement = 0;
+    gameRunning = false;
+    socket.emit('unready',{});
 }
 
 function draw() {
@@ -85,12 +88,16 @@ function draw() {
     } else {
         qrDiv.remove();
         if (!(ready.left && ready.right)) {
-            text("left",pLeft.x, 325);
+            text('left',pLeft.x, 325);
             image(ready.left?img_ready:img_unready, pLeft.x, 225);
-            text("right",pRight.x, 325);
+            text('right',pRight.x, 325);
             image(ready.right?img_ready:img_unready, pRight.x, 225);
             text('Waiting for all players ready up', 150, 125);
             return;
+        }
+        if (!gameRunning){
+            socket.emit('gamestarted', {});
+            gameRunning = true;
         }
     }
 
@@ -270,7 +277,7 @@ function doPunch(side, stance) {
     }
 
     if (Math.abs(playersDisplacement) >= movesToRingOut || otherPlayer.lives <= 0) {
-        setTimeout(resetPlayers, 5000);
+        setTimeout(resetGameState, 5000);
         otherPlayer.changeState('dead');
     }
 }

@@ -7,6 +7,7 @@ let buttonWidth = 500;
 let buttonHeight = 400;
 let buttonX;
 let buttonY;
+let gameRunning = false; 
 
 let isReady = false;
 
@@ -14,6 +15,7 @@ function socketInit() {
     delete socketInit;
     socket = io.connect(window.location.origin);
     socket.on('unready', unready);
+    socket.on('gamestarted', gamestarted);
     socket.on('assign', function(data) {
         console.log('Got a side', data);
         side = data.side;
@@ -72,21 +74,24 @@ function setup() {
 function draw() {
     if (!side) {
         background('grey');
-    } else if (side == "right") {
+    } else if (side == 'right') {
         background('blue');
-    } else if (side == "left"){
+    } else if (side == 'left'){
         background('red');
     }
     if (!isReady){
-        fill("red");
+        fill('red');
     } else if (isReady) {
-        fill("green");
+        fill('green');
     }
+
     rect(buttonX, buttonY, buttonWidth, buttonHeight);
-    
-    fill("black");
-    text("Ready Up", buttonX+buttonWidth/2-40, buttonY+buttonHeight/2);
-    
+    fill('black')
+    if (!gameRunning){
+        text(isReady?'You are Ready':'Ready up', buttonX+buttonWidth/2-40, buttonY+buttonHeight/2);
+    } else {
+        text('Click to crouch/stand up', buttonX+buttonWidth/2-40, buttonY+buttonHeight/2);
+    }
 
     text('Interval ' + interval + 'ms', 2, 14);
     if (unsupporteds.length > 0) {
@@ -96,7 +101,7 @@ function draw() {
 
     textSize(25);
     if (!socket) {
-        text('Click to join', canvasWidth/2-50, 100); 
+        text('Click to join', canvasWidth/2-50, 100);
     } else {
         text(side, canvasWidth/2-20, 100);
 
@@ -117,19 +122,26 @@ function draw() {
 function unready(){
     isReady = false;
 }
+function gamestarted(){
+    gameRunning = true;
+}
 
 function mouseReleased() {
     if (!socket){
         socketInit();
     }
     //ready button
-    if (                            
+    if (
         mouseX > buttonX &&
         mouseX < buttonX+buttonWidth &&
         mouseY > buttonY &&
         mouseY < buttonY+buttonHeight
-      ) {
-          isReady = true;
-        socket.emit('ready', {side});
-      }
+    ) {
+        if (!gameRunning){
+            socket.emit('ready', {});
+            isReady = true;
+        } else {
+            socket.emit('crouch', {});
+        }
+    }
 }
