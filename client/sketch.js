@@ -28,6 +28,7 @@ function preload() {
     raft = loadImage('assets/scenery/raft1.png');
     img_ready = loadImage('assets/UI/ready.png');
     img_unready = loadImage('assets/UI/unready.png');
+    sound_KO = loadSound('assets/sound/KO/KOsound.mp3')
 }
 
 function setup() {
@@ -83,7 +84,7 @@ function draw() {
     fill('black');
     textSize(30);
     if (!(joined.left && joined.right)) {
-        text('Waiting for all players to join on ' + server_address, 150, 125);
+        text('Waiting for all players to join on \n'+`https://${server_address}:3000/phone/`, 175, 75);
         return;
     } else {
         qrDiv.remove();
@@ -276,6 +277,7 @@ function doPunch(side, stance) {
 
     if (deadPlayer) {
         setTimeout(resetGameState, 5000);
+        sound_KO.play();
         deadPlayer.changeState('dead');
     }
 }

@@ -124,6 +124,7 @@ function Player(side, name){
             break;
             case 'stunned':
             this.anim.resetImg(this.img_stunned, 3, 48);
+            random(this.sounds_stunned).play();
             this.anim.onAnimationOver(() => {
                 this.resetState();
             });
@@ -142,14 +143,12 @@ function Player(side, name){
             break;
             case 'low_stunned':
             this.anim.resetImg(this.img_low_stunned, 3, 60);
+            random(this.sounds_stunned).play();
             this.anim.onAnimationOver(() => {
                 this.changeState('crouched');
             });
             break;
             case 'low_blocking':
-            if (this.state != 'idle') {
-                return
-            }
             this.anim.resetImg(this.img_low_blocking, 3, 39);
             this.anim.onAnimationOver(() => {
                 this.changeState('crouched');
@@ -157,12 +156,14 @@ function Player(side, name){
             break;
             case 'damaged':
             this.anim.resetImg(this.img_damaged, 3, 24);
+            random(this.sounds_dmg).play();
             this.anim.onAnimationOver(() => {
                 this.changeState('idle');
             });
             break;
             case 'low_damaged':
             this.anim.resetImg(this.img_low_damaged, 3, 24);
+            random(this.sounds_dmg).play();
             this.anim.onAnimationOver(() => {
                 this.changeState('crouched');
             });
@@ -182,11 +183,11 @@ function Player(side, name){
 
     this.sounds_dmg = [];
     for (let k = 1; k <= 5; k++){
-        this.sounds_dmg.push(loadSound('assets/sound/combat/damage'+ k +'.mp3'));
+        this.sounds_dmg.push(loadSound('assets/sound/combat/damage/damage'+ k +'.mp3'));
     }
     this.sounds_stunned = [];
     for (let k = 1; k <= 4; k++){
-        this.sounds_stunned.push(loadSound('assets/sound/combat/stunned'+ k +'.mp3'));
+        this.sounds_stunned.push(loadSound('assets/sound/combat/stunned/stunned'+ k +'.mp3'));
     }
     
     this.img_blocking = loadImage('assets/character_template/block.png');
