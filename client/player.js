@@ -153,13 +153,15 @@ function Player(side, name){
             });
             break;
             case 'damaged':
-            let nextState = 'idle';
-            if (this.state.startsWith('low_') || this.state == 'crouched') {
-                nextState = 'crouched;'
-            }
             this.anim.resetImg(this.img_damaged, 3, 24);
             this.anim.onAnimationOver(() => {
-                this.changeState(nextState);
+                this.changeState('idle');
+            });
+            break;
+            case 'low_damaged':
+            this.anim.resetImg(this.img_low_damaged, 3, 24);
+            this.anim.onAnimationOver(() => {
+                this.changeState('crouched');
             });
             break;
             case 'dead':
@@ -191,6 +193,7 @@ function Player(side, name){
     this.img_low_blocking = loadImage('assets/character_template/low_block.png');
     this.img_low_stunned = loadImage('assets/character_template/low_stunned.png');
     this.img_damaged = loadImage('assets/character_template/damage.png');
+    this.img_low_damaged = loadImage('assets/character_template/low_damage.png');
     this.img_dying = loadImage('assets/character_template/death.png');
     this.img_dead = loadImage('assets/character_template/dead.png');
     this.img_crouched = loadImage('assets/character_template/crouched.png');
