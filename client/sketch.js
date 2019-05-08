@@ -244,7 +244,7 @@ function doPunch(side, stance) {
             default:
                 otherPlayer.lives -= 1;
                 playersDisplacement += 2*dispDelta;
-                otherPlayer.changeState('damaged');
+                otherPlayer.changeState(otherPlayer.isLow() ? 'low_damaged' : 'damaged');
                 break;
             }
         } else if (stance == 'low') {
@@ -259,14 +259,24 @@ function doPunch(side, stance) {
                 break;
             default:
                 otherPlayer.lives -= 2;
-                otherPlayer.changeState('damaged');
+                otherPlayer.changeState(otherPlayer.isLow() ? 'low_damaged' : 'damaged');
             break;
         }
     }
 
-    if (Math.abs(playersDisplacement) >= movesToRingOut || otherPlayer.lives <= 0) {
+    let deadPlayer = null;
+    if (otherPlayer.lives <= 0) {
+        otherPlayer.lives = 0;
+        deadPlayer = otherPlayer;
+    } else if (playersDisplacement >= movesToRingOut) {
+        deadPlayer = pRight;
+    } else if (playersDisplacement <= -movesToRingOut) {
+        deadPlayer = pLeft;
+    }
+
+    if (deadPlayer) {
         setTimeout(resetGameState, 5000);
-        otherPlayer.changeState('dead');
+        deadPlayer.changeState('dead');
     }
 }
 
@@ -287,10 +297,7 @@ function keyPressed () {
         playerAction({side:'left',action:'punch'});
     }
     if (key == 'S') {
-        playerAction({side:'left',action:'low_block'});
-    }
-    if (key == 'A') {
-        playerAction({side:'left',action:'low_punch'});
+        playerAction({side:'left',action:'crouch'});
     }
     if (key == 'I') {
         playerAction({side:'right',action:'block'});
@@ -299,9 +306,6 @@ function keyPressed () {
         playerAction({side:'right',action:'punch'});
     }
     if (key == 'K') {
-        playerAction({side:'right',action:'low_block'});
-    }
-    if (key == 'L') {
-        playerAction({side:'right',action:'low_punch'});
+        playerAction({side:'right',action:'crouch'});
     }
 }

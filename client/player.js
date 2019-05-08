@@ -104,6 +104,9 @@ function Player(side, name){
             }
         }
     };
+    this.isLow = () => {
+        return this.state == 'crouched' || this.state.startsWith('low_');
+    };
     this.changeState = (state) => {
         switch (state) {
             case 'idle':
