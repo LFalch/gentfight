@@ -169,6 +169,7 @@ function Player(side, name){
         this.state = state;
     }
     this.name = name;
+
     this.img_blocking = loadImage('assets/character_template/block.png');
     this.img_punching = loadImage('assets/character_template/punch.png');
     this.img_stunned = loadImage('assets/character_template/stunned.png');
