@@ -153,7 +153,7 @@ function Player(side, name){
             });
             break;
             case 'damaged':
-            let nextState = 'crouched';
+            let nextState = 'idle';
             if (this.state.startsWith('low_') || this.state == 'crouched') {
                 nextState = 'crouched;'
             }
