@@ -121,6 +121,7 @@ function draw() {
 
 function unready(){
     isReady = false;
+    gameRunning = false;
 }
 function gamestarted(){
     gameRunning = true;
