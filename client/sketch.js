@@ -89,11 +89,14 @@ function draw() {
     } else {
         qrDiv.remove();
         if (!(ready.left && ready.right)) {
-            text('left',pLeft.x, 325);
-            image(ready.left?img_ready:img_unready, pLeft.x, 225);
-            text('right',pRight.x, 325);
-            image(ready.right?img_ready:img_unready, pRight.x, 225);
-            text('Waiting for all players ready up', 150, 125);
+            text('left',pLeft.x, 110);
+            image(ready.left?img_ready:img_unready, pLeft.x, 125);
+            text('right',pRight.x, 110);
+            image(ready.right?img_ready:img_unready, pRight.x, 125);
+            text('Waiting for all players ready up', 195, 75);
+            text(' Ready up by clicking the \n ready button on your phone', 200, 225);
+            text('To punch in game, jab/punch forward hard', 75, 370);
+            text('To block in game, jab/punch up hard', 75, 400);
             return;
         }
         if (!gameRunning){

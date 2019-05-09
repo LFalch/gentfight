@@ -135,7 +135,7 @@ function Player(side, name){
             break;
             
             case 'low_punching':
-            this.anim.resetImg(this.img_low_punching, 4, 40);
+            this.anim.resetImg(this.img_low_punching, 4, 36);
             this.anim.onAnimationOver(() => {
                 this.changeState('crouched');
                 doPunch(this.side, 'low');
@@ -149,7 +149,7 @@ function Player(side, name){
             });
             break;
             case 'low_blocking':
-            this.anim.resetImg(this.img_low_blocking, 3, 30);
+            this.anim.resetImg(this.img_low_blocking, 3, 27);
             this.anim.onAnimationOver(() => {
                 this.changeState('crouched');
             });
