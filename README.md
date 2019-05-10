@@ -1,4 +1,4 @@
-# gentfight
+# Telefonboks
 
 Eksamensprojekt til DigiTek
 
