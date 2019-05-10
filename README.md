@@ -6,14 +6,15 @@ Brawler styret med mobiltelefoner.
 
 ## Hvordan virker det?
 
-For at kunne køre projektet, skal du installere node-modulerne som det kræver.
-Dette kan gøres ved at køre `npm install --save` i repoet, eller køre `setup.bat`.
+Serveren kører på Node.js, og det skal derfor være installeret.
+Projektet kræver også nogle node-moduler, som skal hentes og installeres i projektet.
+Dette kan gøres ved at køre `npm install --save` i repoet eller køre `setup.bat`.
 
 Når modulerne er installeret, kan man starte node-serveren med `node app.js`.
-Herfra kan du gå ind på spillet på `http://localhost:3000`.
+Herfra kan du gå ind på spillet på `https://localhost:3000`.
 
-Telefon-controllerne skal så joine med `http://{ip}:3000/phone`, hvor `{ip}` er serverens IP (eller addresse, hvis en sådan findes).
-Denne del kommer til at stå i spillet på et tidspunkt.
+Telefon-controllerne skal så joine med `https://{ip}:3000/phone`, hvor `{ip}` er serverens IP (eller addresse, hvis en sådan findes).
+Dette også inde på skærmen samt en QR-kode, der kan skannes for at gøre tilslutning nemt.
 
 ### Struktur
 
