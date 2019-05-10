@@ -1,6 +1,8 @@
 let imagesFlipped = false;
 let originalImage;
 
+// Denne funktion gør, så det næste billede, der tegnes, bliver flippet.
+// Dette skaber en advarelse, da P5.js-funktioner helst ikke vil overrides, men det virker godt.
 function imageFlip() {
     if (!originalImage) {
         originalImage = image;
@@ -18,7 +20,9 @@ function imageFlip() {
     imagesFlipped = !imagesFlipped;
 }
 
+// Objekt til at organisere animationsspritesheets
 function AnimationSpritesheet(img, columns, animationTime) {
+    // Sæt animation til at køre fra et nyt spritesheet
     this.resetImg = (img, columns, animationTime) => {
         this.img = img;
         this.i = 0;
@@ -30,7 +34,9 @@ function AnimationSpritesheet(img, columns, animationTime) {
         this.tileHeight = this.img.height;
         this.onAnimOver = () => {};
     };
+    // Vi kører den for at sætte det første spritesheet op.
     this.resetImg(img, columns, animationTime);
+    // Draw-funktion, hvor vi holder øje med om hvilken frame af animationen, der skal tegnes
     this.draw = (x, y, w, h) => {
         let i = Math.floor(this.i++ / this.step);
         image(this.img, x, y, w || this.tileWidth, h || this.tileHeight, i*this.tileWidth, this.j*this.tileHeight, this.tileWidth, this.tileHeight);
@@ -39,11 +45,15 @@ function AnimationSpritesheet(img, columns, animationTime) {
             this.onAnimOver();
         }
     };
+    // Sæt et callback på den nuværende animation, som kaldes når animationen har nået sidste frame
     this.onAnimationOver = (callback) => {
         this.onAnimOver = callback;
     }
 }
+// Hjælpevariabel til understående funktion
 let dispUnit;
+// Returnerer antal pixels, én playerdisplacement svarer til på skærmen (jf. variablen `playersDisplacement`)
+// `raft` er ikke statisk defineret, så dette kan ikke bare være i en konstant.
 function displacementUnit() {
     if (!dispUnit) {
         dispUnit = raft.width / (movesToRingOut * 2 + 2);
@@ -51,15 +61,21 @@ function displacementUnit() {
     return dispUnit || 10;
 }
 
+// Player-objektet, som holder styr på, hvad spilleren har gang i, og sørger for at tegne den rigtig
+// og holde styr på dens liv
 function Player(side, name){
+    // Initialisér spilleren state
     this.side = side;
     this.state = 'idle';
     this.y = 100;
     this.lives = 20;
+
+    // Funktion til at gøre spilleren 'idle' igen
     this.resetState = () => {
         this.state = 'idle';
         this.anim.resetImg(this.img_idle, 1, 30);
     }
+    // Spillerene tegnes forskelligt alt efter, om den er venstre eller højre
     if (side == 'left') {
         this.x = 352 - 36;
         this.show = () => {
@@ -87,6 +103,7 @@ function Player(side, name){
             imageFlip();
         };
     }
+    // Funktion til at gøre 
     this.action = (action) => {
         console.log('I am do thing now ' + action);
         const up = this.state == 'idle';
