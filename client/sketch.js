@@ -84,7 +84,7 @@ function draw() {
     fill('black');
     textSize(30);
     if (!(joined.left && joined.right)) {
-        text('Waiting for all players to join on \n'+`https://${server_address}:3000/phone/`, 175, 75);
+        text('Waiting for all players to join on \n'+`https://${server_address}:3000/phone/`+ '\n         scan QR code to join', 175, 50);
         return;
     } else {
         qrDiv.remove();
