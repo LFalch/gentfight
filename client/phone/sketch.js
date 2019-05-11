@@ -66,9 +66,7 @@ function draw() {
     textSize(18);
     textAlign(LEFT);
     text('Interval ' + interval + 'ms', 2, 20);
-    textSize(12);
-    text('Unsupported features: ' + unsupporteds, 2, 30);
-
+    
     textSize(30);
     textAlign(CENTER);
     fill('black')
