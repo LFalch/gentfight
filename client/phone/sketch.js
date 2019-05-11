@@ -1,12 +1,8 @@
 let side;
 let socket = null;
-let canvasWidth = window.innerWidth-window.innerWidth*1/20;
-let canvasHeight = window.innerHeight-window.innerHeight*1/20;
+const canvasWidth = window.innerWidth*0.90;
+const canvasHeight = window.innerHeight*0.90;
 
-let buttonWidth = 500;
-let buttonHeight = 400;
-let buttonX;
-let buttonY;
 let gameRunning = false; 
 
 let isReady = false;
@@ -37,6 +33,7 @@ let rotationRate = {
 let acceleration = new Vector(0, 0, 0);
 let accelerationWithGrav = new Vector(0, 0, 0);
 let interval = 0;
+let img_ready, img_unready, cx, cy;
 
 function checkFeature(feature, cb) {
     if (!('on' + feature in window)) {
@@ -62,13 +59,16 @@ function preload() {
     checkFeature('compassneedscalibration', () => {
         alert('Please calibrate your compass: Wave your phone around like an idiot.');
     })
+    img_ready = loadImage('../assets/UI/ready.png');
+    img_unready = loadImage('../assets/UI/unready.png');
 }
 
 function setup() {
     createCanvas(canvasWidth, canvasHeight);
     frameRate(40);
-    buttonX = canvasWidth/2-buttonWidth/2;
-    buttonY = canvasHeight/5;
+    cx = canvasWidth/2-40;
+    cy = canvasHeight/5+200;
+    textSize(25);
 }
 
 function draw() {
@@ -79,29 +79,22 @@ function draw() {
     } else if (side == 'left'){
         background('red');
     }
-    if (!isReady){
-        fill('red');
-    } else if (isReady) {
-        fill('green');
-    }
-
-    rect(buttonX, buttonY, buttonWidth, buttonHeight);
+    
     fill('black')
     if (!gameRunning){
-        text(isReady?'You are Ready':'Ready up', buttonX+buttonWidth/2-40, buttonY+buttonHeight/2);
+        text(isReady?'You are Ready':'Ready up', cx, cy);
     } else {
-        text('Click to crouch/stand up', buttonX+buttonWidth/2-40, buttonY+buttonHeight/2);
+        text('Click to crouch/stand up', cx, cy);
     }
-
+    
     text('Interval ' + interval + 'ms', 2, 14);
-    if (unsupporteds.length > 0) {
-        textSize(12);
-        text('Unsupported features: ' + unsupporteds, 120, 14);
-    }
-
+    textSize(12);
+    text('Unsupported features: ' + unsupporteds, 120, 14);
     textSize(25);
+
+    image(isReady?img_ready:img_unready, 20, 20);
     if (!socket) {
-        text('Click to join', canvasWidth/2-50, 100);
+        text('Click screen to join', canvasWidth/2-50, 100);
     } else {
         text(side, canvasWidth/2-20, 100);
 
@@ -130,19 +123,10 @@ function gamestarted(){
 function mouseReleased() {
     if (!socket){
         socketInit();
-    }
-    //ready button
-    if (
-        mouseX > buttonX &&
-        mouseX < buttonX+buttonWidth &&
-        mouseY > buttonY &&
-        mouseY < buttonY+buttonHeight
-    ) {
-        if (!gameRunning){
-            socket.emit('ready', {});
-            isReady = true;
-        } else {
-            socket.emit('crouch', {});
-        }
+    } else if (!gameRunning){
+        socket.emit('ready', {});
+        isReady = true;
+    } else {
+        socket.emit('crouch', {});
     }
 }
