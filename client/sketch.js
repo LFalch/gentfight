@@ -102,7 +102,7 @@ function draw() {
             text('right',pRight.x+25, 110);
             text('To punch in game, jab/punch forward hard', width/2, 370);
             text('To block in game, jab/punch up hard', width/2, 400);
-            text('To crouch in game, press your phone screen once game has started', width/2, 430);    
+            text('Once the game has started, press your phone screen to crouch', width/2, 430);    
             return;
         }
         if (!gameRunning){
