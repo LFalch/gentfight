@@ -83,20 +83,26 @@ function draw() {
     background(0, 119, 190);
     fill('black');
     textSize(30);
+    textAlign(CENTER, BASELINE);
     if (!(joined.left && joined.right)) {
-        text('Waiting for all players to join on \n'+`https://${server_address}:3000/phone/`+ '\n         scan QR code to join', 175, 50);
+        text('Waiting for all players to join on \n'+`https://${server_address}:3000/phone/`+ '\n Scan QR code to join', width/2, 50);
+        textSize(16);
+        text('Then press your phone screen to join the game', width/2, height-height/20);
         return;
     } else {
         qrDiv.remove();
+        textSize(30);
         if (!(ready.left && ready.right)) {
-            text('left',pLeft.x, 110);
             image(ready.left?img_ready:img_unready, pLeft.x, 125);
-            text('right',pRight.x, 110);
             image(ready.right?img_ready:img_unready, pRight.x, 125);
-            text('Waiting for all players ready up', 195, 75);
-            text(' Ready up by clicking the \n ready button on your phone', 200, 225);
-            text('To punch in game, jab/punch forward hard', 75, 370);
-            text('To block in game, jab/punch up hard', 75, 400);
+            text('Waiting for all players ready up', width/2, 75);
+            text('Ready up by pressing your phone screen', width/2, 225);
+            textSize(16);
+            text('left',pLeft.x+25, 110);
+            text('right',pRight.x+25, 110);
+            text('To punch in game, jab/punch forward hard', width/2, 370);
+            text('To block in game, jab/punch up hard', width/2, 400);
+            text('To crouch in game, press your phone screen once game has started', width/2, 430);    
             return;
         }
         if (!gameRunning){
@@ -104,10 +110,6 @@ function draw() {
             gameRunning = true;
         }
     }
-
-    textSize(16);
-    text("life: " + pLeft.lives, pLeft.x, pLeft.y-20);
-    text("life: " + pRight.lives, pRight.x, pRight.y-20);
 
     noStroke();
     rect(width-20-10*30, 20, 10*30, 40); //Background for right player health bar
