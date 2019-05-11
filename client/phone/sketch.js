@@ -66,9 +66,9 @@ function preload() {
 function setup() {
     createCanvas(canvasWidth, canvasHeight);
     frameRate(40);
-    cx = canvasWidth/2-40;
+    cx = canvasWidth/2;
     cy = canvasHeight/5+200;
-    textSize(25);
+    textSize(30);
 }
 
 function draw() {
@@ -79,24 +79,29 @@ function draw() {
     } else if (side == 'left'){
         background('red');
     }
-    
-    fill('black')
-    if (!gameRunning){
-        text(isReady?'You are Ready':'Ready up', cx, cy);
-    } else {
-        text('Click to crouch/stand up', cx, cy);
-    }
-    
-    text('Interval ' + interval + 'ms', 2, 14);
+    textSize(18);
+    textAlign(LEFT);
+    text('Interval ' + interval + 'ms', 2, 20);
     textSize(12);
-    text('Unsupported features: ' + unsupporteds, 120, 14);
-    textSize(25);
+    text('Unsupported features: ' + unsupporteds, 2, 30);
 
-    image(isReady?img_ready:img_unready, 20, 20);
+    textSize(30);
+    textAlign(CENTER);
+    fill('black')
+    if (socket){
+        if (!gameRunning){
+            text(isReady?'You are Ready':'Ready up', cx, cy);
+            rect(cx-img_ready.width*2/2,cy+50, 120,120);
+            image(isReady?img_ready:img_unready, cx-img_ready.width*2/2, cy+50, img_ready.width*2, img_ready.height*2);
+        } else {
+            text('Click to crouch/stand up', cx, cy);
+        }
+    }
+
     if (!socket) {
-        text('Click screen to join', canvasWidth/2-50, 100);
+        text('Click screen to join', canvasWidth/2, 200);
     } else {
-        text(side, canvasWidth/2-20, 100);
+        text('You are: ' + side, cx, canvasHeight/5);
 
         const downDir = accelerationWithGrav.sub(acceleration).normalise();
         const downMotion = acceleration.dot(downDir ? downDir : new Vector(0, 0, 0));
