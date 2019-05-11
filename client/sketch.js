@@ -83,7 +83,7 @@ function draw() {
     background(0, 119, 190);
     fill('black');
     textSize(30);
-    textAlign(CENTER, BASELINE);
+    textAlign(CENTER);
     if (!(joined.left && joined.right)) {
         text('Waiting for all players to join on \n'+`https://${server_address}:3000/phone/`+ '\n Scan QR code to join', width/2, 50);
         textSize(16);
@@ -93,13 +93,13 @@ function draw() {
         qrDiv.remove();
         textSize(30);
         if (!(ready.left && ready.right)) {
-            image(ready.left?img_ready:img_unready, pLeft.x, 125);
-            image(ready.right?img_ready:img_unready, pRight.x, 125);
+            image(ready.left?img_ready:img_unready, pLeft.x-50, 125);
+            image(ready.right?img_ready:img_unready, pRight.x+50, 125);
             text('Waiting for all players ready up', width/2, 75);
             text('Ready up by pressing your phone screen', width/2, 225);
             textSize(16);
-            text('left',pLeft.x+25, 110);
-            text('right',pRight.x+25, 110);
+            text('left player:', pLeft.x-25, 110);
+            text('right player:', pRight.x+75, 110);
             text('To punch in game, jab/punch forward hard', width/2, 370);
             text('To block in game, jab/punch up hard', width/2, 400);
             text('Once the game has started, press your phone screen to crouch', width/2, 430);    
