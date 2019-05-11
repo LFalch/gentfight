@@ -18,13 +18,6 @@ function socketInit() {
     });
 }
 
-let unsupporteds = [];
-let orientation = {
-    alpha: 0,
-    beta: 0,
-    gamma: 0,
-    absolute: false,
-};
 let rotationRate = {
     alpha: 0,
     beta: 0,
@@ -37,28 +30,19 @@ let img_ready, img_unready, cx, cy;
 
 function checkFeature(feature, cb) {
     if (!('on' + feature in window)) {
-        unsupporteds.push(feature);
+        console.log(feature + ' missing!');
     } else {
         window.addEventListener(feature, cb);
     }
 }
 
 function preload() {
-    checkFeature('deviceorientation', (event) => {
-        orientation.alpha = event.alpha;
-        orientation.beta = event.beta;
-        orientation.gamma = event.gamma;
-        orientation.absolute = event.absolute;
-    });
     checkFeature('devicemotion', (event) => {
         rotationRate = event.rotationRate;
         acceleration = new Vector(event.acceleration);
         accelerationWithGrav = new Vector(event.accelerationIncludingGravity);
         interval = event.interval;
     });
-    checkFeature('compassneedscalibration', () => {
-        alert('Please calibrate your compass: Wave your phone around like an idiot.');
-    })
     img_ready = loadImage('../assets/UI/ready.png');
     img_unready = loadImage('../assets/UI/unready.png');
 }
@@ -97,7 +81,6 @@ function draw() {
             text('Click to crouch/stand up', cx, cy);
         }
     }
-
     if (!socket) {
         text('Click screen to join', canvasWidth/2, 200);
     } else {
