@@ -110,7 +110,7 @@ function draw() {
         // Herefter beregner vi acceleration med fortegn i nedadgående retning, som skalar-produktet mellem `downDir` og acceleration.
         // Dette svarer til at finde størrelsen af `acceleration` projiceret på `downDir`, da `downDir` er en enhedsvektor
         const downMotion = acceleration.dot(downDir ? downDir : new Vector(0, 0, 0));
-        // Herefter bergener vi sidegående acceleration ved brug af pythagoras, siden denne er vinkelret på den nedadgående acceleration.
+        // Herefter beregner vi sidegående acceleration ved brug af pythagoras, siden denne er vinkelret på den nedadgående acceleration.
         const sidewaysMotion = Math.sqrt(acceleration.lengthSq() - downMotion * downMotion);
 
         // Hvis der findes nogen data, sender vi den til serveren via web-socketen.
